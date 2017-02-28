@@ -1,9 +1,6 @@
 (function () {
-    // Provide your access token
-    L.mapbox.accessToken = 'pk.eyJ1Ijoic2ViYXN0aWFuLWNoIiwiYSI6ImNpejkyazUzeTAwdXUyd3FvdDc2OHVxZTYifQ.a4zHr0JWgO-XqYs-AUPA0w';
-    // Create a map in the div #map
-    var map = L.mapbox.map('map', 'mapbox.light', {
 
+    var map = L.map('map', {
         zoomSnap: .1,
         center: [42.9699, -71.0224],
         zoom: 14,
@@ -11,41 +8,85 @@
 
     });
 
-    map.setMaxBounds(map.getBounds(), {
+  /*  map.setMaxBounds(map.getBounds(), {
         padding: [50, 50]
-    });
+    }); */
 
-    var legend = L.control({
-        positon: 'bottomright'
-    });
+    var tiles = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
 
-    legend.onAdd = function (map) {
+    var nfhl_url = "https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28";
 
-        var div = L.DomUtil.get("legend");
+    var floods = L.esri.featureLayer({
+        url: "https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28",
+        where: "FLD_ZONE = 'X' OR FLD_ZONE = 'AE'",
+        style: function (feature) {
+            if (feature.properties.FLD_ZONE === 'AE') {
+                
+                return {
+                    color: '#ff0000',
+                    weight: 2
+                };
+            } else if (feature.properties.FLD_ZONE === 'X') {
+                
+                return {
+                    color: '#000ff',
+                    weight: 2
+                };
+            } else {
+                return {
+                    color: '#228B22',
+                    weight: 2
+                }
+            }
+            
+        }
+    }).addTo(map);
+    
+    
 
-        L.DomEvent.disableScrollPropagation(div);
-        L.DomEvent.disableClickPropagation(div);
+    var popupTemplate = "<h3>Flood Zone: {FLD_ZONE}</h3><br><h4>100 year? {SFHA_TF}";
 
-        return div;
+      floods.bindPopup(function (e) {
+          return L.Util.template(popupTemplate, e.feature.properties)
+      });
+
+
+ /*   function drawMap(zones) {
+
+        var floods = L.geoJSON(zones, {
+
+            style: function () {
+                return {
+                    color: '#ff0000',
+                    weight: 1
+                }
+            }
+        }).addTo(map);
+
+    } */
+
+
+    function drawLegend() {
+
+        var legend = L.control({
+            positon: 'bottomright'
+        });
+
+        legend.onAdd = function (map) {
+
+            var div = L.DomUtil.get("legend");
+
+            L.DomEvent.disableScrollPropagation(div);
+            L.DomEvent.disableClickPropagation(div);
+
+            return div;
+        }
+
+        legend.addTo(map);
+
     }
-
-    legend.addTo(map);
-
-     var floods = L.esri.featureLayer({
-         url: "https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28",
-         where: "SFHA_TF = 'T'",
-         style: function () {
-             return {
-                 color: '#ff0000',
-                 weight: 2
-             };
-         }
-     }).addTo(map);
-
-     var popupTemplate = "<h3>DFIRM ID: {DFIRM_ID}</h3><br><h4>100 year? {SFHA_TF}";
-
-     floods.bindPopup(function (e) {
-         return L.Util.template(popupTemplate, e.feature.properties)
-     });
 
 })();

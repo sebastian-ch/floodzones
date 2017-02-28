@@ -2,16 +2,14 @@
 <html lang='en'>
 
 <head>
-    <title>Title!</title>
+    <title>Find Your FEMA Flood Zone</title>
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 
-
-    <link href='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.css' rel='stylesheet' />
+    <!--<link href='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.css' rel='stylesheet' /> -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
     <link href='https://api.mapbox.com/mapbox-assembly/v0.8.0/assembly.min.css' rel='stylesheet'>
     <link href='/css/style.css' rel='stylesheet' />
-
-
 
 </head>
 
@@ -19,14 +17,13 @@
     <div class='grid'>
         <div class='col col--12 col--3-ml p12 pb6 viewport-third viewport-full-ml'>
             <div class='h-full scroll-auto'>
-                <h1 class='txt-headline mb6'>Title here</h1>
-                <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Aenean lacinia bibendum nulla sed consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-                <h2 class='txt-xl mt18 mb12'>subheading</h2>
-                <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Aenean lacinia bibendum nulla sed consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                <h1 class='txt-headline mb6'>Find Your Flood Zone</h1>
+                <p>Enter address here</p>
+                <h2 class='txt-xl mt18 mb12'>What is this?</h2>
+                <p>FEMA Flood Zones are what determine costly flood insurance. By doing minimal research beforehand, you can avoid mandatory insurance and also gain peace of mind.</p>
                 <footer class='mt12 bg-gray-faint txt-s'>
                     <ul>
-                        <li>Explore the raw <a class='link' href='#'>data</a></li>
-                        <li>Map authored by <a class='link' href='#'>Ptolemy</a></li>
+                        <li>Map authored by <a class='link' href='https://sebastian-ch.github.io/' target="_blank">Sebastian Hancock</a></li>
                     </ul>
                 </footer>
 
@@ -47,8 +44,8 @@
     </div>
 
     <script async defer src="https://api.mapbox.com/mapbox-assembly/v0.7.0/assembly.js"></script>
-    <script src='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.js'></script>
-    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+    <!--<script src='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.js'></script> -->
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
     <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src='/js/app.js'></script>
