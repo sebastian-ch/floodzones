@@ -8,7 +8,7 @@
 
     });
 
-  /*  map.setMaxBounds(map.getBounds(), {
+   /* map.setMaxBounds(map.getBounds(), {
         padding: [50, 50]
     }); */
 
@@ -17,20 +17,23 @@
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    var nfhl_url = "https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28";
+   // var nfhl_url = "https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28";
 
     var floods = L.esri.featureLayer({
         url: "https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28",
-        where: "FLD_ZONE = 'X' OR FLD_ZONE = 'AE'",
+        where: "SFHA_TF = 'T'",
+        fields: ['OBJECTID', 'SFHA_TF', 'FLD_ZONE',],
+        simplifyFactor: 0.35,
+        precision: 5,
         style: function (feature) {
             if (feature.properties.FLD_ZONE === 'AE') {
-                
+
                 return {
                     color: '#ff0000',
                     weight: 2
                 };
             } else if (feature.properties.FLD_ZONE === 'X') {
-                
+
                 return {
                     color: '#000ff',
                     weight: 2
@@ -41,32 +44,32 @@
                     weight: 2
                 }
             }
-            
+
         }
     }).addTo(map);
-    
-    
+
+
 
     var popupTemplate = "<h3>Flood Zone: {FLD_ZONE}</h3><br><h4>100 year? {SFHA_TF}";
 
-      floods.bindPopup(function (e) {
-          return L.Util.template(popupTemplate, e.feature.properties)
-      });
+    floods.bindPopup(function (e) {
+        return L.Util.template(popupTemplate, e.feature.properties)
+    });
 
 
- /*   function drawMap(zones) {
+    /*   function drawMap(zones) {
 
-        var floods = L.geoJSON(zones, {
+           var floods = L.geoJSON(zones, {
 
-            style: function () {
-                return {
-                    color: '#ff0000',
-                    weight: 1
-                }
-            }
-        }).addTo(map);
+               style: function () {
+                   return {
+                       color: '#ff0000',
+                       weight: 1
+                   }
+               }
+           }).addTo(map);
 
-    } */
+       } */
 
 
     function drawLegend() {
