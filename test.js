@@ -2,7 +2,7 @@
 
     var map = L.map('map', {
         zoomSnap: .1,
-        center: [42.9699, -71.0224],
+        center: [37.6043, -77.3614],
         zoom: 14
             //minZoom: 13
 
@@ -20,9 +20,9 @@
 
     console.log(bounds);
 
-    var tiles = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+    var tiles = L.tileLayer('https://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
         maxZoom: 18,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
 
@@ -68,8 +68,6 @@
     }
 
     function makeMap(data) {
-
-        Qjson = jsonQ(data);
 
         floodLayer = L.geoJson(data, {
             style: function (feature) {
