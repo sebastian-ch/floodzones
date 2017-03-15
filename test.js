@@ -14,7 +14,9 @@
         bounds = map.getBounds(),
         center = map.getCenter(),
         boundsZoom = map.getBoundsZoom(bounds),
-        floodLayer;
+        floodLayer,
+        floodLayerGroup = L.layerGroup(),
+        Qjson;
 
     console.log(bounds);
 
@@ -55,35 +57,73 @@
             .within(bounds)
             .fields(['OBJECTID', 'DFIRM_ID', 'FLD_ZONE', 'SFHA_TF'])
             .precision(4)
+            .simplify(map, 0.30)
             .run(function (error, featureCollection, response) {
 
+                console.log(featureCollection);
                 makeMap(featureCollection);
+                createLegend(featureCollection);
+
             })
     }
 
     function makeMap(data) {
 
+        Qjson = jsonQ(data);
+
         floodLayer = L.geoJson(data, {
             style: function (feature) {
-                return {
-                    color: 'red',
-                    weight: 1
-                };
+
+                if (feature.properties["FLD_ZONE"] == 'X') {
+                    return {
+                        color: 'blue',
+                        weight: 1
+                    }
+                } else if (feature.properties["FLD_ZONE"] == 'AE' || feature.properties["FLD_ZONE"] == 'A') {
+                    return {
+
+                        color: 'red',
+                        weight: 1
+                    }
+                }
             }
-        }).addTo(map);
+        }).addTo(floodLayerGroup);
+
+        var popupTemplate = "<h3>Flood Zone: {FLD_ZONE}</h3><br><h4>100 year? {SFHA_TF}";
+
+        floodLayer.bindPopup(function (e) {
+            return L.Util.template(popupTemplate, e.feature.properties)
+        });
+
+        floodLayerGroup.addTo(map);
+    }
+
+    function createLegend(data) {
+        
+        var legColor = '#00f';
+
+        Qjson = jsonQ(data);
+        var allZones = Qjson.find('FLD_ZONE');
+        var legendContent = allZones.unique();
+        console.log(allZones.unique());
+
+        for (var i = 0; i < legendContent.length; i++) {
+
+            document.getElementById("addColor").innerHTML += 
+                '<span class="w24 h24" style="background:' + legColor + '"></span>';
+            
+            document.getElementById("addLabel").innerHTML += '<p id="label">' + legendContent[i] + '</p>';
+        }
     }
 
     function geocodeAddress(address) {
 
         L.esri.Geocoding.geocode().text(address).run(function (err, results) {
 
-            //bounds = results.results["0"].bounds;
             searchLatLng = L.latLng(results.results["0"].latlng.lat, results.results["0"].latlng.lng);
-            //    L.marker(searchLatLng).addTo(map);
             //console.log(results);
             //console.log(bounds);
-            // map.fitBounds(bounds);
-            //  queryFloodMap(bounds);
+
 
             findNewLocation(searchLatLng);
 
@@ -92,27 +132,17 @@
 
     function findNewLocation(latLng) {
 
-        //floodLayer.remove();
-
         L.marker(searchLatLng).addTo(map);
-        map.setView(latLng, 13, {
-            animate: true,
-        });
-        
-        map.on('moveend', function() {
-            bounds = map.getBounds();
-            center = map.getCenter();
-            queryFloodMap(bounds);
-        })
-        
+        map.setView(latLng, 13);
+
+
+        floodLayerGroup.clearLayers();
+        bounds = map.getBounds();
+        center = map.getCenter();
+        queryFloodMap(bounds);
+
+        console.log(bounds)
+
     }
-    /*var popupTemplate = "<h3>Flood Zone: {FLD_ZONE}</h3><br><h4>100 year? {SFHA_TF}";
-
-      floods.bindPopup(function (e) {
-          return L.Util.template(popupTemplate, e.feature.properties)
-      });
-      
-      */
-
 
 })();
