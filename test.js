@@ -1,14 +1,14 @@
 (function () {
 
-      var map = L.map('map', {
-          zoomSnap: .1,
-          center: [37.6043, -77.3614],
-          zoom: 14
-              //minZoom: 13
+    var map = L.map('map', {
+        zoomSnap: .1,
+        center: [37.6043, -77.3614],
+        zoom: 14
+            //minZoom: 13
 
-      });
+    });
 
-       /*  var map = L.map('map', {
+    /*  var map = L.map('map', {
  L.mapbox.accessToken = 'pk.eyJ1Ijoic2ViYXN0aWFuLWNoIiwiYSI6ImNpejkxdzZ5YzAxa2gyd21udGpmaGU0dTgifQ.IrEd_tvrl6MuypVNUGU5SQ';
     var map = L.mapbox.map('map', 'mapbox.streets').setView([37.6043, -77.3614], 14); */
 
@@ -25,10 +25,10 @@
 
     console.log(bounds);
 
-     var tiles = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
-         maxZoom: 18,
-         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-     }).addTo(map);
+    var tiles = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
 
     var service = L.esri.featureLayerService({
         url: 'https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28'
