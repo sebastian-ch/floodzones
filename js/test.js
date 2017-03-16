@@ -2,7 +2,7 @@
 
     var map = L.map('map', {
         zoomSnap: .1,
-        center: [37.6043, -77.3614],
+        center: [37.5328, -77.4318],
         zoom: 14
             //minZoom: 13
 
