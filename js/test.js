@@ -64,8 +64,8 @@
             .simplify(map, 0.30)
             .run(function (error, featureCollection, response) {
 
-                console.log(typeof(featureCollection.features));
-                console.log(featureCollection);
+                //console.log(typeof(featureCollection.features));
+                //console.log(featureCollection);
                 makeMap(featureCollection);
                 createLegend(featureCollection);
 
@@ -92,7 +92,7 @@
             }
         }).addTo(floodLayerGroup);
         
-        console.log(typeof(floodLayer));
+        //console.log(typeof(floodLayer));
 
         var popupTemplate = "<h3>Flood Zone: {FLD_ZONE}</h3><br><h4>100 year? {SFHA_TF}";
 
