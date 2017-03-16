@@ -23,7 +23,7 @@
         floodLayerGroup = L.layerGroup(),
         Qjson;
 
-    console.log(bounds);
+    //console.log(bounds);
 
     var tiles = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
         maxZoom: 18,
@@ -64,6 +64,7 @@
             .simplify(map, 0.30)
             .run(function (error, featureCollection, response) {
 
+                console.log(typeof(featureCollection.features));
                 console.log(featureCollection);
                 makeMap(featureCollection);
                 createLegend(featureCollection);
@@ -90,6 +91,8 @@
                 }
             }
         }).addTo(floodLayerGroup);
+        
+        console.log(typeof(floodLayer));
 
         var popupTemplate = "<h3>Flood Zone: {FLD_ZONE}</h3><br><h4>100 year? {SFHA_TF}";
 
@@ -107,7 +110,7 @@
         Qjson = jsonQ(data);
         var allZones = Qjson.find('FLD_ZONE');
         var legendContent = allZones.unique();
-        console.log(allZones.unique());
+        //console.log(allZones.unique());
 
         for (var i = 0; i < legendContent.length; i++) {
 
