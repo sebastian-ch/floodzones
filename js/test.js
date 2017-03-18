@@ -2,7 +2,7 @@
 
     var map = L.map('map', {
         zoomSnap: .1,
-        center: [37.6043, -77.3614],
+        center: [37.5328, -77.4318],
         zoom: 14
 
     });
@@ -68,7 +68,12 @@
             .simplify(map, 0.20)
             .run(function (error, featureCollection, response) {
 
+<<<<<<< HEAD
                 console.log(featureCollection);
+=======
+                //console.log(typeof(featureCollection.features));
+                //console.log(featureCollection);
+>>>>>>> origin/master
                 makeMap(featureCollection);
                 createLegend(featureCollection);
 
@@ -96,6 +101,11 @@
                 }
             }
         }).addTo(floodLayerGroup);
+<<<<<<< HEAD
+=======
+        
+        //console.log(typeof(floodLayer));
+>>>>>>> origin/master
 
         var popupTemplate = "<h3>Flood Zone: {FLD_ZONE}</h3><br><h4>100 year? {SFHA_TF}";
 
