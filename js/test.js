@@ -27,9 +27,9 @@
     //console.log(bounds);
 
     var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	maxZoom: 19,
-	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-});
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
     var service = L.esri.featureLayerService({
         url: 'https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28'
     });
@@ -40,22 +40,22 @@
     map.on('locationfound', onLocationFound);
     map.on('locationerror', onLocationError);
     //queryFloodMap(bounds);
-    
+
     function onLocationFound(e) {
-        
+
         current_location = L.marker(e.latlng).addTo(map);
         map.setZoom(14);
         bounds = map.getBounds();
         enter = map.getCenter();
         queryFloodMap(bounds);
-        
+
     }
-    
+
     function onLocationError(e) {
-        
+
         alert(e.message);
         queryFloodMap(bounds);
-        
+
     }
 
     function queryFloodMap(bounds) {
@@ -68,12 +68,12 @@
             .simplify(map, 0.20)
             .run(function (error, featureCollection, response) {
 
-<<<<<<< HEAD
+
                 console.log(featureCollection);
-=======
+
                 //console.log(typeof(featureCollection.features));
                 //console.log(featureCollection);
->>>>>>> origin/master
+
                 makeMap(featureCollection);
                 createLegend(featureCollection);
 
@@ -101,11 +101,9 @@
                 }
             }
         }).addTo(floodLayerGroup);
-<<<<<<< HEAD
-=======
-        
+
         //console.log(typeof(floodLayer));
->>>>>>> origin/master
+
 
         var popupTemplate = "<h3>Flood Zone: {FLD_ZONE}</h3><br><h4>100 year? {SFHA_TF}";
 
