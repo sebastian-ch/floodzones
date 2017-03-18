@@ -11,7 +11,6 @@
  L.mapbox.accessToken = 'pk.eyJ1Ijoic2ViYXN0aWFuLWNoIiwiYSI6ImNpejkxdzZ5YzAxa2gyd21udGpmaGU0dTgifQ.IrEd_tvrl6MuypVNUGU5SQ';
     var map = L.mapbox.map('map', 'mapbox.streets').setView([37.6043, -77.3614], 14); */
 
-
     var searchAddress = "",
         searchLatLng,
         //bounds = L.latLngBounds(map.getBounds()),
@@ -24,7 +23,23 @@
         current_location,
         current_accuracy;
 
-    //console.log(bounds);
+    $('.input').bind("enterKey", function (e) {
+        searchAddress = $('.input').val();
+        //console.log(searchAddress);
+        geocodeAddress(searchAddress);
+    });
+
+    $('.btn').on('click', function (e) {
+        searchAddress = $('.input').val();
+        //console.log(searchAddress);
+        geocodeAddress(searchAddress);
+    })
+
+    $('.input').keyup(function (e) {
+        if (e.keyCode == 13) {
+            $(this).trigger("enterKey");
+        }
+    });
 
     var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -137,31 +152,11 @@
 
     function geocodeAddress(address) {
 
-        $('.input').bind("enterKey", function (e) {
-            searchAddress = $('.input').val();
-            //console.log(searchAddress);
-            geocodeAddress(searchAddress);
-        });
-
-        $('.btn').on('click', function (e) {
-            searchAddress = $('.input').val();
-            //console.log(searchAddress);
-            geocodeAddress(searchAddress);
-        })
-
-        $('.input').keyup(function (e) {
-            if (e.keyCode == 13) {
-                $(this).trigger("enterKey");
-            }
-        });
-
-
         L.esri.Geocoding.geocode().text(address).run(function (err, results) {
 
             searchLatLng = L.latLng(results.results["0"].latlng.lat, results.results["0"].latlng.lng);
             //console.log(results);
             //console.log(bounds);
-
 
             findNewLocation(searchLatLng);
 
@@ -182,5 +177,7 @@
         console.log(bounds)
 
     }
+
+    function getColor()
 
 })();
