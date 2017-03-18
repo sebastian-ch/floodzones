@@ -4,7 +4,6 @@
         zoomSnap: .1,
         center: [37.6043, -77.3614],
         zoom: 14
-            //minZoom: 13
 
     });
 
@@ -21,50 +20,54 @@
         boundsZoom = map.getBoundsZoom(bounds),
         floodLayer,
         floodLayerGroup = L.layerGroup(),
-        Qjson;
+        Qjson,
+        current_location,
+        current_accuracy;
 
     //console.log(bounds);
 
-    var tiles = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
-
+    var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
     var service = L.esri.featureLayerService({
         url: 'https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28'
     });
-
-    queryFloodMap(bounds);
-
-
-    $('.input').bind("enterKey", function (e) {
-        searchAddress = $('.input').val();
-        //console.log(searchAddress);
-        geocodeAddress(searchAddress);
-    });
-
-    $('.btn').on('click', function (e) {
-        searchAddress = $('.input').val();
-        //console.log(searchAddress);
-        geocodeAddress(searchAddress);
+    map.locate({
+        setView: true,
+        maxZoom: 14
     })
-
-    $('.input').keyup(function (e) {
-        if (e.keyCode == 13) {
-            $(this).trigger("enterKey");
-        }
-    });
+    map.on('locationfound', onLocationFound);
+    map.on('locationerror', onLocationError);
+    //queryFloodMap(bounds);
+    
+    function onLocationFound(e) {
+        
+        current_location = L.marker(e.latlng).addTo(map);
+        map.setZoom(14);
+        bounds = map.getBounds();
+        enter = map.getCenter();
+        queryFloodMap(bounds);
+        
+    }
+    
+    function onLocationError(e) {
+        
+        alert(e.message);
+        queryFloodMap(bounds);
+        
+    }
 
     function queryFloodMap(bounds) {
 
         service.query()
             .within(bounds)
-            .fields(['OBJECTID', 'DFIRM_ID', 'FLD_ZONE', 'SFHA_TF'])
+            .fields(['OBJECTID', 'DFIRM_ID', 'FLD_ZONE', 'SFHA_TF', 'SHAPE.AREA'])
+            .where("SHAPE.AREA > '.00000001'")
             .precision(4)
-            .simplify(map, 0.30)
+            .simplify(map, 0.20)
             .run(function (error, featureCollection, response) {
 
-                console.log(typeof(featureCollection.features));
                 console.log(featureCollection);
                 makeMap(featureCollection);
                 createLegend(featureCollection);
@@ -80,19 +83,19 @@
                 if (feature.properties["FLD_ZONE"] == 'X') {
                     return {
                         color: 'blue',
+                        fillOpacity: 0.2,
                         weight: 1
                     }
                 } else if (feature.properties["FLD_ZONE"] == 'AE' || feature.properties["FLD_ZONE"] == 'A') {
                     return {
 
                         color: 'red',
+                        fillOpacity: 0.2,
                         weight: 1
                     }
                 }
             }
         }).addTo(floodLayerGroup);
-        
-        console.log(typeof(floodLayer));
 
         var popupTemplate = "<h3>Flood Zone: {FLD_ZONE}</h3><br><h4>100 year? {SFHA_TF}";
 
@@ -101,16 +104,19 @@
         });
 
         floodLayerGroup.addTo(map);
+        tiles.addTo(map);
     }
 
     function createLegend(data) {
 
-        var legColor = '#00f';
+        var legColor = '#1c3f6a';
 
         Qjson = jsonQ(data);
         var allZones = Qjson.find('FLD_ZONE');
         var legendContent = allZones.unique();
-        //console.log(allZones.unique());
+        var shap1 = Qjson.find('SHAPE.AREA');
+        var shap1Content = shap1.unique();
+        //console.log(shap1Content);
 
         for (var i = 0; i < legendContent.length; i++) {
 
@@ -122,6 +128,25 @@
     }
 
     function geocodeAddress(address) {
+
+        $('.input').bind("enterKey", function (e) {
+            searchAddress = $('.input').val();
+            //console.log(searchAddress);
+            geocodeAddress(searchAddress);
+        });
+
+        $('.btn').on('click', function (e) {
+            searchAddress = $('.input').val();
+            //console.log(searchAddress);
+            geocodeAddress(searchAddress);
+        })
+
+        $('.input').keyup(function (e) {
+            if (e.keyCode == 13) {
+                $(this).trigger("enterKey");
+            }
+        });
+
 
         L.esri.Geocoding.geocode().text(address).run(function (err, results) {
 
