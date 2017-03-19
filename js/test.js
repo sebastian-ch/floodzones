@@ -1,4 +1,10 @@
 (function () {
+    
+    //nav accordion
+    $('#accordion').accordion({
+        active: false,
+        collapsible: true
+    });
 
     var map = L.map('map', {
         zoomSnap: .1,
@@ -89,11 +95,11 @@
     //add basemap control
     function baseMapControl() {
         
-        var baseName = $('.toggle-group input').val();
+        var baseName = $('#togGroup input').val();
         var tileLayer = L.esri.basemapLayer(baseName).addTo(map);
         var baseLabels = L.esri.basemapLayer(baseName + 'Labels').addTo(map);
 
-        $('.toggle-group input').change(function (e) {
+        $('#togGroup input').change(function (e) {
             
             map.removeLayer(tileLayer);
             map.removeLayer(baseLabels);

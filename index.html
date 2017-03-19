@@ -17,28 +17,33 @@
     <div class='grid'>
         <div class='col col--12 col--3-ml p12 pb6 viewport-third viewport-full-ml'>
             <div class='h-full scroll-auto mr3'>
-                <h1 class='txt-headline mb6'>Find Your Flood Zone</h1>
+                <h2 class='txt-headline mb6'>Find Your Flood Zone</h2>
                 <input class='input' id="search" placeholder='Enter address here' />
-                <button class='btn btn--s mt3'>Enter</button>
+                <button class='btn btn--s mt6'>Enter</button>
 
-                <div class='txt-l mb3'>Flood insurance is federally required for all structures within the Special Flood Hazard Area (SFHA, or the 100-year flood zone) that carry a federally backed mortage.</div>
+                <div id="accordion" class='txt-l w-full mx-auto mt6'>
+                    <h3 class='txt-underline-on-hover align-center bg-gray-faint border-b'>About</h3>
+                    <div>
+                        <p class='txt-m m3'>Flood insurance is federally required for all structures within the Special Flood Hazard Area (SFHA, or the 100-year flood zone) that carry a federally backed mortage</p>
+                    </div>
+                    <h3 class='txt-underline-on-hover align-center bg-gray-faint border-b'>Zone Definitons</h3>
+                    <div>
+                        <p class='txt-s'>This is the Zone Definition Section</p>
 
-                <div class='txt-m'>The flood maps are <b>NOT</b> property or structure specific, regardless of what anyone tells you. This is where much of the confusion arises from. If your lender or insurance company tells you that you are within the SFHA, that is their interpretation of the flood maps. The <b>only way</b> to receive a structure or property specific determination is to apply for a <a href="https://hazards.fema.gov/femaportal/onlinelomc/signin" class='link' target="_blank">Letter of Map Amendment(LOMA).</a></div>
+                    </div>
+                    <h3 class='txt-underline-on-hover align-center bg-gray-faint'>Useful Links</h3>
+                    <div>
+                        <ul class='txt-s'>
+                            <li>List item one</li>
+                            <li>List item two</li>
+                            <li>List item three</li>
+                        </ul>
+                    </div>
+                </div>
 
-                <!-- <div class='txt-ul'>
-                    <div class='txt-li txt-s'>Flood insurance is federally required for all structures within the Special Flood Hazard Area (SFHA, or the 100-year flood zone) that carry a federally backed mortage.</div>
 
-                    <div class='txt-li txt-s'>The flood maps are <b>NOT</b> property or structure specific, regardless of what anyone tells you. This is where much of the confusion arises from. If your lender or insurance company tells you that you are within the SFHA, that is their interpretation of the flood maps. The <b>only way</b> to receive a structure or property specific determination is to apply for a <a href="https://hazards.fema.gov/femaportal/onlinelomc/signin" target="_blank">Letter of Map Amendment(LOMA).</a></div>
 
-                </div> -->
-                <!-- <h3 class='txt-xl mt18 mb12'>Legend</h3>
-                <div id='legend' class="flex-parent">
-
-                   <!-- <div id='addColor' class="flex-child flex-child--no-shrink w30"></div>
-
-                    <div id='addLabel' class="flex-child flex-child--grow"></div>
-
-                </div>-->
+                <!--      <div class='txt-m'>The flood maps are <b>NOT</b> property or structure specific, regardless of what anyone tells you. This is where much of the confusion arises from. If your lender or insurance company tells you that you are within the SFHA, that is their interpretation of the flood maps. The <b>only way</b> to receive a structure or property specific determination is to apply for a <a href="https://hazards.fema.gov/femaportal/onlinelomc/signin" class='link' target="_blank">Letter of Map Amendment(LOMA).</a></div> -->
 
                 <footer class='mt12 bg-gray-faint txt-s'>
                     <ul>
@@ -48,6 +53,7 @@
 
             </div>
         </div>
+
         <div class='col col--12 col--9-ml h180 h-full-ml'>
             <div id="map" class='viewport-twothirds viewport-full-ml'>
 
@@ -84,6 +90,7 @@
     <script src="https://unpkg.com/esri-leaflet-geocoder@2.2.3"></script>
     <script src="https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
     <script src="js/jsonQ.min.js"></script>
     <script src='js/test.js'></script>
 
