@@ -16,27 +16,29 @@
 <body>
     <div class='grid'>
         <div class='col col--12 col--3-ml p12 pb6 viewport-third viewport-full-ml'>
-            <div class='h-full scroll-auto'>
+            <div class='h-full scroll-auto mr3'>
                 <h1 class='txt-headline mb6'>Find Your Flood Zone</h1>
                 <input class='input' id="search" placeholder='Enter address here' />
-                <button class='btn mt3'>Enter</button>
+                <button class='btn btn--s mt3'>Enter</button>
 
-                <div class='txt-l'>Flood Insurance shouldn't be as confusing as it is. This map hopes to clarify the process.</div>
+                <div class='txt-l mb3'>Flood insurance is federally required for all structures within the Special Flood Hazard Area (SFHA, or the 100-year flood zone) that carry a federally backed mortage.</div>
 
-               <!-- <div class='txt-ul'>
+                <div class='txt-m'>The flood maps are <b>NOT</b> property or structure specific, regardless of what anyone tells you. This is where much of the confusion arises from. If your lender or insurance company tells you that you are within the SFHA, that is their interpretation of the flood maps. The <b>only way</b> to receive a structure or property specific determination is to apply for a <a href="https://hazards.fema.gov/femaportal/onlinelomc/signin" class='link' target="_blank">Letter of Map Amendment(LOMA).</a></div>
+
+                <!-- <div class='txt-ul'>
                     <div class='txt-li txt-s'>Flood insurance is federally required for all structures within the Special Flood Hazard Area (SFHA, or the 100-year flood zone) that carry a federally backed mortage.</div>
 
                     <div class='txt-li txt-s'>The flood maps are <b>NOT</b> property or structure specific, regardless of what anyone tells you. This is where much of the confusion arises from. If your lender or insurance company tells you that you are within the SFHA, that is their interpretation of the flood maps. The <b>only way</b> to receive a structure or property specific determination is to apply for a <a href="https://hazards.fema.gov/femaportal/onlinelomc/signin" target="_blank">Letter of Map Amendment(LOMA).</a></div>
 
                 </div> -->
-                <h3 class='txt-xl mt18 mb12'>Legend</h3>
+                <!-- <h3 class='txt-xl mt18 mb12'>Legend</h3>
                 <div id='legend' class="flex-parent">
 
-                    <div id='addColor' class="flex-child flex-child--no-shrink w30"></div>
+                   <!-- <div id='addColor' class="flex-child flex-child--no-shrink w30"></div>
 
                     <div id='addLabel' class="flex-child flex-child--grow"></div>
 
-                </div>
+                </div>-->
 
                 <footer class='mt12 bg-gray-faint txt-s'>
                     <ul>
@@ -54,7 +56,7 @@
                 </div>
             </div>
 
-            <div id='togGroup' class='toggle-group'>
+            <div id='togGroup' class='toggle-group bg-white'>
                 <label class='toggle-container'>
                     <input checked name='toggle' value='Gray' type='radio' />
                     <div class='toggle'>Gray</div>
@@ -64,6 +66,14 @@
                     <input name='toggle' value='Imagery' type='radio' />
                     <div class='toggle'>Imagery</div>
                 </label>
+            </div>
+
+            <div id='legend' class="bg-white">
+                <h5 class='txt-bold txt-l mb3 w-full mx-auto'>Flood Zones Visible</h5>
+                <div id='legendContent' class="flex-parent bg-white">
+                    <div id='addColor' class="flex-child flex-child--no-shrink w30"></div>
+                    <div id='addLabel' class="flex-child flex-child--grow"></div>
+                </div>
             </div>
         </div>
     </div>

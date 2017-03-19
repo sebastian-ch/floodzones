@@ -3,7 +3,8 @@
     var map = L.map('map', {
         zoomSnap: .1,
         center: [37.5328, -77.4318],
-        zoom: 15
+        zoom: 15,
+        maxZoom: 18
 
     });
     var service = L.esri.featureLayerService({
@@ -11,17 +12,29 @@
     });
     var searchAddress = "",
         searchLatLng, //inputAddress
-        currentLocation;
+        currentLocation,
+        radiusLocation;
     var floodLayerGroup = L.layerGroup(); //layergroup of flood maps
+    
+    //add basemap control
     var baseControl = L.control({
         position: 'topright'
     });
-
     baseControl.onAdd = function (map) {
         var div = L.DomUtil.get("togGroup");
         return div;
     }
     baseControl.addTo(map);
+    
+    //add legend control
+    var legendControl = L.control({
+        position: 'bottomleft'
+    });
+    legendControl.onAdd = function (map) {
+        var lDiv = L.DomUtil.get("legend");
+        return lDiv;
+    }
+    legendControl.addTo(map);
 
     //jquery to grab the input text and query the map based
     //on it. Also if "enter" is pressed, it will do the same
@@ -59,15 +72,17 @@
 
     function onLocationFound(e) {
         currentLocation = L.marker(e.latlng).addTo(map);
+        radiusLocation = L.circle(e.latlng, {radius: 50});
         map.setZoom(14);
-        var bounds = map.getBounds().pad(1);
+        var bounds = map.getBounds().pad(0.1);
+        console.log(bounds);
         var center = map.getCenter();
 
         queryFloodMap(bounds);
     }
 
     function onLocationError() {
-        var bounds = map.getBounds();
+        var bounds = map.getBounds().pad(0.1);
         var center = map.getCenter();
     }
 
@@ -99,6 +114,7 @@
 
         service.query()
             .within(bounds)
+            .intersects(bounds)
             .fields(['OBJECTID', 'DFIRM_ID', 'FLD_ZONE', 'SFHA_TF', 'SHAPE.AREA'])
             .where("SHAPE.AREA >= '.000001'")
             .precision(4)
@@ -177,11 +193,11 @@
             document.getElementById("addLabel").innerHTML += '<p id="label">' + legendContent[i] + '</p>';
         }
 
-        $('#legend span').hover(function () {
+      /*  $('#legend span').hover(function () {
             $(this).css("border", "2px solid yellow");
         }, function () {
             $(this).css("border", "none");
-        });
+        }); */
     }
 
     function geocodeAddress(address) {
