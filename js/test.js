@@ -60,7 +60,7 @@
     function onLocationFound(e) {
         currentLocation = L.marker(e.latlng).addTo(map);
         map.setZoom(14);
-        var bounds = map.getBounds();
+        var bounds = map.getBounds().pad(1);
         var center = map.getCenter();
 
         queryFloodMap(bounds);
@@ -100,7 +100,7 @@
         service.query()
             .within(bounds)
             .fields(['OBJECTID', 'DFIRM_ID', 'FLD_ZONE', 'SFHA_TF', 'SHAPE.AREA'])
-            .where("SHAPE.AREA >= '.0000001'")
+            .where("SHAPE.AREA >= '.000001'")
             .precision(4)
             .simplify(map, 0.30)
             .run(function (error, featureCollection, response) {
@@ -207,7 +207,7 @@
 
 
         floodLayerGroup.clearLayers();
-        bounds = map.getBounds().pad(0.8);
+        bounds = map.getBounds().pad(1);
         center = map.getCenter();
         queryFloodMap(bounds);
         console.log(bounds);
