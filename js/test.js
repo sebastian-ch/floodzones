@@ -123,6 +123,13 @@
 
     }
 
+    //queries the map service - searches for all features that
+    //intersect the bounds of the map,
+    //only includes needed fields,
+    //where the area is larger than .000001,
+    //sets the precision to 4 decimal places,
+    //simplifies polygons (0-1 scale)
+    //once complete, run makeMap() and createLegend() with data
     function queryFloodMap(bounds) {
 
         service.query()
@@ -146,9 +153,12 @@
             })
     }
 
+    //add the queried map data to the map
     function makeMap(data) {
 
         var floodLayer = L.geoJson(data, {
+            
+            //style it based on flood zone type
             style: function (feature) {
 
                 if (feature.properties["FLD_ZONE"] == 'X') {
@@ -166,9 +176,10 @@
                     }
                 }
             }
+            //add it to a group so I can remove it when a user searches for a new area
         }).addTo(floodLayerGroup);
 
-        //popup for geoJson
+        //add popup
         var popupTemplate = "<h3>Flood Zone: {FLD_ZONE}</h3>";
 
         floodLayer.bindPopup(function (e) {
@@ -176,13 +187,17 @@
         });
 
 
+        //add basemap at the same time as the data loads
         baseMapControl();
         floodLayerGroup.addTo(map);
+        //remove the loading spinner
         $('.loading').hide();
         createLocationPopup(floodLayer);
 
     }
 
+    //creates the legend dynamically
+    //only shows the flood zones that appear on the map instead of all of them.
     function createLegend(data) {
 
         var Qjson = jsonQ(data);
@@ -207,6 +222,9 @@
             document.getElementById("addLabel").innerHTML += '<p id="label">' + legendContent[i] + '</p>';
         }
 
+        //eventually - highlight the legend and all of those zones will 
+        //highlight on the map
+        
       /*  $('#legend span').hover(function () {
             $(this).css("border", "2px solid yellow");
         }, function () {
@@ -214,6 +232,8 @@
         }); */
     }
 
+    //when an address is entered and you hit enter or the button,
+    //geocode the address and call findNewLocation() with the latlng
     function geocodeAddress(address) {
 
         L.esri.Geocoding.geocode().text(address).run(function (err, results) {
@@ -224,26 +244,34 @@
         });
     }
 
+    //
     function findNewLocation(latLng) {
 
+        //remove the current marker
         currentLocation.remove();
 
         //clear legend info
         document.getElementById("addColor").innerHTML = '';
         document.getElementById("addLabel").innerHTML = '';
 
+        //add a new marker at the new location
         currentLocation = L.marker(searchLatLng).addTo(map);
         map.setView(latLng, 14);
 
-
+        
+        //clear old flood data from map
         floodLayerGroup.clearLayers();
+        //get new bounds and center
         bounds = map.getBounds().pad(1);
         center = map.getCenter();
+        //new query with new bounds
         queryFloodMap(bounds);
         console.log(bounds);
 
     }
 
+    //use point in polygon to find out what flood zone the marker is in
+    //and give it a popup
     function createLocationPopup(floodLayer) {
 
         var results = leafletPip.pointInLayer(currentLocation.getLatLng(), floodLayer);
