@@ -17,27 +17,65 @@
     <div class='grid'>
         <div class='col col--12 col--3-ml p12 pb6 viewport-third viewport-full-ml'>
             <div class='h-full scroll-auto mr3'>
-                <h2 class='txt-headline mb6'>Find Your Flood Zone</h2>
+                <h1 class='txt-xl mb3 align-center'>Find Your Flood Zone</h1>
                 <input class='input' id="search" placeholder='Enter address here' />
                 <button class='btn btn--s mt6'>Enter</button>
 
                 <div id="accordion" class='txt-l w-full mx-auto mt6'>
                     <h3 class='txt-underline-on-hover align-center bg-gray-faint border-b'>About</h3>
-                    <div>
-                        <p class='txt-m m3'>Flood insurance is federally required for all structures within the Special Flood Hazard Area (SFHA, or the 100-year flood zone) that carry a federally backed mortage</p>
+                    <div class='p6'>
+                        <p class='txt-m m3'>Flood insurance is federally required for all structures within the Special Flood Hazard Area (SFHA, or the 100-year flood zone) that carry a federally backed mortage.</p> 
+                        <p class='txt-m m3'>The FEMA flood maps are <b>NOT</b> property or structure specific - this causes a lot of confusion. If your lender or insurance company tells you that you are within the SFHA, that is their interpretation of the flood maps. They usually hire a flood determination company to do that for them. This page shows the maps that your lender should have used in their determination.</p>
+                        <p class='txt-m m3'>The <b>only way</b> to receive a structure or property specific determination from FEMA is to apply for a <a href="https://hazards.fema.gov/femaportal/onlinelomc/signin" class='link' target="_blank">Letter of Map Amendment (LOMA)</a>.</p>
                     </div>
                     <h3 class='txt-underline-on-hover align-center bg-gray-faint border-b'>Zone Definitons</h3>
-                    <div>
-                        <p class='txt-s'>This is the Zone Definition Section</p>
-
+                    <div class='p3'>
+                        <h3 class='txt-m align-center txt-underline'>Special Flood Hazard Areas (SFHA)</h3>
+                        <p class='txt-s mb6'>All zones starting with <b>V</b> or <b>A</b> are within the 100-year flood area. The zones are differentiated by type of flooding or information available.This map shows these zones in red.</p>
+                        <div class='w-full mb6'>
+                            <ul class='txt-s'>
+                                <li>Zone <b>A</b> - No Base flood elevation determined.</li>
+                                <li>Zone <b>AE</b> - Base flood elevation determined.</li>
+                                <li>Zone <b>AO</b> - Sheet flow flooding or Alluvial fan flooding, flood depths usually between 1-3 feet.</li>
+                                <li>Zone <b>AH</b> - Shallow flooding or ponding.</li>
+                                <li>Zone <b>A99</b> - An area that will be protected from the 100-year flood area via a flood protection system (ex. levee), but that system is under construction.</li>
+                                <li>Zone <b>V</b> - Coastal area - takes into consideration wave action. No base flood elevation determined.</li>
+                                <li>Zone <b>VE</b> - Coastal area - takes into consideration wave action. Base flood elevation determined.</li>
+                            </ul>
+                        </div>
+                        
+                        <h3 class='txt-m align-center txt-underline'>Zones outside of the SFHA</h3>
+                        <p class='txt-s mb6'>This map shows these zones in blue.</p>
+                        <div class='w-full'>
+                            <ul class='txt-s'>
+                                <li>Zone <b>X (shaded)</b> or Zone <b>B</b> - Within the 500-year flood zone. New maps show Zone X(shaded) instead of Zone B.</li>
+                                <li>Zone <b>X (unshaded)</b> or Zone <b>C</b> - Outside of the 500-year flood zone. New maps show Zone X(unshaded) instead of Zone C.</li>
+                            </ul>
+                        </div>
+                        <a href="https://www.fema.gov/flood-zones" target='_blank' class='link txt-xs'>More About FEMA Flood Zone Definitions</a>
                     </div>
                     <h3 class='txt-underline-on-hover align-center bg-gray-faint'>Useful Links</h3>
-                    <div>
+                    <div class='p6'>
                         <ul class='txt-s'>
-                            <li>List item one</li>
-                            <li>List item two</li>
-                            <li>List item three</li>
-                        </ul>
+                                <li><a href="http://msc.fema.gov/portal" target='_blank' class='link txt-s'>Map Service Center</a></li>
+                                <li><a href="https://www.floodsmart.gov/" target='_blank' class='link txt-s'>FloodSmart - the National Flood Insurance Program</a></li>
+                                <li><a href="https://hazards.fema.gov/femaportal/onlinelomc/signin" target='_blank' class='link txt-s'>Apply for a LOMA</a></li>
+                            </ul>
+
+                    </div>
+                    <h3 class='txt-underline-on-hover align-center bg-gray-faint'>Common Abbreviations</h3>
+                    <div class='p6'>
+                        <ul class='txt-s'>
+                                <li><b>SFHA</b> - Special Flood Hazard Area</li>
+                                <li><b>BFE</b> - Base Flood Elevation</li>
+                                <li><b>FIRM</b> - Flood Insurance Rate Map (FEMA Flood Maps)</li>
+                                <li><b>MSC</b> - <a href="http://msc.fema.gov/portal" target='_blank' class='link txt-s'>Map Service Center</a></li>
+                                <li><b>NFIP</b> - National Flood Insurance Program</li>
+                                <li><b>FIS</b> - Flood Insurance Study</li>
+                                <li><b>LOMA</b> - Letter of Map Amendment</li>
+                                <li><b>LOMR</b> - Letter of Map Revision</li>
+                            </ul>
+
                     </div>
                 </div>
 
@@ -45,7 +83,7 @@
 
                 <!--      <div class='txt-m'>The flood maps are <b>NOT</b> property or structure specific, regardless of what anyone tells you. This is where much of the confusion arises from. If your lender or insurance company tells you that you are within the SFHA, that is their interpretation of the flood maps. The <b>only way</b> to receive a structure or property specific determination is to apply for a <a href="https://hazards.fema.gov/femaportal/onlinelomc/signin" class='link' target="_blank">Letter of Map Amendment(LOMA).</a></div> -->
 
-                <footer class='mt12 bg-gray-faint txt-s'>
+                <footer class='mt6 bg-gray-faint txt-xs'>
                     <ul>
                         <li>Map authored by <a class='link' href='https://sebastian-ch.github.io/' target="_blank">Sebastian Hancock</a></li>
                     </ul>

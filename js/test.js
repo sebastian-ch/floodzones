@@ -2,7 +2,7 @@
     
     //nav accordion
     $('#accordion').accordion({
-        active: false,
+        //active: false,
         collapsible: true
     });
 
@@ -76,25 +76,32 @@
     map.on('locationerror', onLocationError);
 
 
+    //if you find the location, add a marker and reset the bounds
     function onLocationFound(e) {
         currentLocation = L.marker(e.latlng).addTo(map);
-        radiusLocation = L.circle(e.latlng, {radius: 50});
+        //radiusLocation = L.circle(e.latlng, {radius: 5000});
+        //radiusLocation.addTo(map);
+
         map.setZoom(14);
-        var bounds = map.getBounds().pad(0.1);
+        var bounds = map.getBounds().pad(0.05);
         console.log(bounds);
         var center = map.getCenter();
+        map.setZoom(14);
 
         queryFloodMap(bounds);
     }
 
+    //if you don't find the location, use the initial map state
     function onLocationError() {
-        var bounds = map.getBounds().pad(0.1);
+        var bounds = map.getBounds().pad(0.05);
         var center = map.getCenter();
+        queryFloodMap(bounds);
     }
 
-    //add basemap control
+    //function to deal with the basemap toggle
     function baseMapControl() {
         
+        //initial basemap toggle value
         var baseName = $('#togGroup input').val();
         var tileLayer = L.esri.basemapLayer(baseName).addTo(map);
         var baseLabels = L.esri.basemapLayer(baseName + 'Labels').addTo(map);
@@ -119,8 +126,9 @@
     function queryFloodMap(bounds) {
 
         service.query()
-            .within(bounds)
+            //.within(bounds)
             .intersects(bounds)
+            //.nearby(currentLocation.getLatLng(), 800000)
             .fields(['OBJECTID', 'DFIRM_ID', 'FLD_ZONE', 'SFHA_TF', 'SHAPE.AREA'])
             .where("SHAPE.AREA >= '.000001'")
             .precision(4)
@@ -180,9 +188,9 @@
         var Qjson = jsonQ(data);
         var allZones = Qjson.find('FLD_ZONE');
         var legendContent = allZones.unique();
-        //var shap1 = Qjson.find('SHAPE.AREA');
-        //var shap1Content = shap1.unique();
-        //console.log(shap1Content);
+        /*var shap1 = Qjson.find('SHAPE.AREA');
+        var shap1Content = shap1.unique();
+        console.log(shap1Content); */
         var legendColor;
 
         for (var i = 0; i < legendContent.length; i++) {
@@ -241,7 +249,7 @@
         var results = leafletPip.pointInLayer(currentLocation.getLatLng(), floodLayer);
         console.log(results);
         if (results.length != 0) {
-            currentLocation.bindPopup(results["0"].feature.properties.FLD_ZONE).openPopup();
+            currentLocation.bindPopup("The marker falls in flood zone " + results["0"].feature.properties.FLD_ZONE).openPopup();
         }
     }
 
