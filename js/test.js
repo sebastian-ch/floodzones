@@ -67,7 +67,7 @@
         //radiusLocation.addTo(map);
 
         map.setZoom(14);
-        var bounds = map.getBounds().pad(0.05);
+        var bounds = map.getBounds();
         console.log(bounds);
         var center = map.getCenter();
 
@@ -78,7 +78,7 @@
     function onLocationError() {
         
          map.setZoom(14);
-        var bounds = map.getBounds().pad(0.05);
+        var bounds = map.getBounds();
         var center = map.getCenter();
         queryFloodMap(bounds);
     }
@@ -146,13 +146,15 @@
             .intersects(bounds)
             //.nearby(currentLocation.getLatLng(), 800000)
             .fields(['OBJECTID', 'DFIRM_ID', 'FLD_ZONE', 'SFHA_TF'])
-            //.where("SHAPE.AREA >= '.000001'")
+            .where("SHAPE.AREA >= '.000001'")
             .where("NOT ZONE_SUBTY = 'AREA OF MINIMAL FLOOD HAZARD'")
             .precision(4)
             .simplify(map, 0.30)
             .run(function (error, featureCollection, response) {
 
                 console.log(featureCollection);
+                console.log(error);
+                console.log(response);
 
                 //console.log(typeof(featureCollection.features));
                 //console.log(featureCollection);
@@ -270,7 +272,7 @@
         //clear old flood data from map
         floodLayerGroup.clearLayers();
         //get new bounds and center
-        bounds = map.getBounds().pad(1);
+        bounds = map.getBounds();
         center = map.getCenter();
         //new query with new bounds
         queryFloodMap(bounds);
