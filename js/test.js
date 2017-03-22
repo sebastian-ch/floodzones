@@ -24,6 +24,9 @@
         floodLayerGroup = L.layerGroup(); //layergroup of flood maps
     
     addControls();
+    baseMapControl();
+    var tileLayer = L.esri.basemapLayer('Gray').addTo(map);
+    var baseLabels = L.esri.basemapLayer('GrayLabels').addTo(map);
 
     //jquery to grab the input text and query the map based
     //on it. Also if "enter" is pressed, it will do the same
@@ -112,8 +115,6 @@
 
         //initial basemap toggle value
         var baseName = $('#togGroup input').val();
-        var tileLayer = L.esri.basemapLayer(baseName).addTo(map);
-        var baseLabels = L.esri.basemapLayer(baseName + 'Labels').addTo(map);
 
         $('#togGroup input').change(function (e) {
 
@@ -121,7 +122,6 @@
             map.removeLayer(baseLabels);
 
             baseName = $(this).val();
-            console.log(baseName);
 
             tileLayer = L.esri.basemapLayer(baseName);
             baseLabels = L.esri.basemapLayer(baseName + 'Labels').addTo(map);
@@ -200,7 +200,7 @@
 
 
         //add basemap at the same time as the data loads
-        baseMapControl();
+        //baseMapControl();
         floodLayerGroup.addTo(map);
         //remove the loading spinner
         $('.loading').hide();
