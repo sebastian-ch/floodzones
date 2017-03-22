@@ -163,14 +163,14 @@
 
                 if (feature.properties["FLD_ZONE"] == 'X') {
                     return {
-                        color: 'blue',
+                        color: '#448ee4',
                         fillOpacity: 0.2,
                         weight: 1
                     }
-                } else if (feature.properties["FLD_ZONE"] == 'AE' || feature.properties["FLD_ZONE"] == 'A') {
+                } else {
                     return {
 
-                        color: 'red',
+                        color: '#dc2b28',
                         fillOpacity: 0.2,
                         weight: 1
                     }
@@ -243,8 +243,7 @@
 
         });
     }
-
-    //
+    
     function findNewLocation(latLng) {
 
         //remove the current marker
@@ -258,7 +257,6 @@
         currentLocation = L.marker(searchLatLng).addTo(map);
         map.setView(latLng, 14);
 
-        
         //clear old flood data from map
         floodLayerGroup.clearLayers();
         //get new bounds and center
