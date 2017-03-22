@@ -2,7 +2,7 @@
 
     //nav accordion
     $('#accordion').accordion({
-        //active: false,
+        active: false,
         collapsible: true
     });
 
@@ -220,10 +220,10 @@
 
         for (var i = 0; i < legendContent.length; i++) {
 
-            if (legendContent[i] == 'A' || legendContent[i] == 'AE') {
-                legendColor = 'red';
+            if (legendContent[i] == 'X') {
+                legendColor = '#448ee4';
             } else {
-                legendColor = 'blue';
+                legendColor = '#dc2b28';
             }
 
             document.getElementById("addColor").innerHTML +=
@@ -283,9 +283,11 @@
     function createLocationPopup(floodLayer) {
 
         var results = leafletPip.pointInLayer(currentLocation.getLatLng(), floodLayer);
-        console.log(results);
+        //console.log(results);
         if (results.length != 0) {
             currentLocation.bindPopup("The marker falls in flood zone " + results["0"].feature.properties.FLD_ZONE).openPopup();
+        } else {
+            currentLocation.bindPopup("This marker falls outside of the 100-year and 500-year flood zone").openPopup();
         }
     }
 
