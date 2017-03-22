@@ -1,5 +1,5 @@
 (function () {
-    
+
     //nav accordion
     $('#accordion').accordion({
         //active: false,
@@ -7,40 +7,23 @@
     });
 
     var map = L.map('map', {
-        zoomSnap: .1,
-        center: [37.5328, -77.4318],
-        zoom: 15,
-        maxZoom: 18
+            zoomSnap: .1,
+            center: [37.5328, -77.4318],
+            zoom: 14,
+            maxZoom: 18,
+            minZoom: 12
 
-    });
-    var service = L.esri.featureLayerService({
-        url: 'https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28'
-    });
-    var searchAddress = "",
+        }),
+        service = L.esri.featureLayerService({
+            url: 'https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28'
+        }),
+        searchAddress = "",
         searchLatLng, //inputAddress
         currentLocation,
-        radiusLocation;
-    var floodLayerGroup = L.layerGroup(); //layergroup of flood maps
+        radiusLocation,
+        floodLayerGroup = L.layerGroup(); //layergroup of flood maps
     
-    //add basemap control
-    var baseControl = L.control({
-        position: 'topright'
-    });
-    baseControl.onAdd = function (map) {
-        var div = L.DomUtil.get("togGroup");
-        return div;
-    }
-    baseControl.addTo(map);
-    
-    //add legend control
-    var legendControl = L.control({
-        position: 'bottomleft'
-    });
-    legendControl.onAdd = function (map) {
-        var lDiv = L.DomUtil.get("legend");
-        return lDiv;
-    }
-    legendControl.addTo(map);
+    addControls();
 
     //jquery to grab the input text and query the map based
     //on it. Also if "enter" is pressed, it will do the same
@@ -78,6 +61,7 @@
 
     //if you find the location, add a marker and reset the bounds
     function onLocationFound(e) {
+        
         currentLocation = L.marker(e.latlng).addTo(map);
         //radiusLocation = L.circle(e.latlng, {radius: 5000});
         //radiusLocation.addTo(map);
@@ -86,28 +70,53 @@
         var bounds = map.getBounds().pad(0.05);
         console.log(bounds);
         var center = map.getCenter();
-        map.setZoom(14);
 
         queryFloodMap(bounds);
     }
 
     //if you don't find the location, use the initial map state
     function onLocationError() {
+        
+         map.setZoom(14);
         var bounds = map.getBounds().pad(0.05);
         var center = map.getCenter();
         queryFloodMap(bounds);
     }
 
+    function addControls() {
+
+        //add basemap control
+        var baseControl = L.control({
+            position: 'topright'
+        });
+        baseControl.onAdd = function (map) {
+            var div = L.DomUtil.get("togGroup");
+            return div;
+        }
+        baseControl.addTo(map);
+
+
+        //add legend control
+        var legendControl = L.control({
+            position: 'bottomleft'
+        });
+        legendControl.onAdd = function (map) {
+            var lDiv = L.DomUtil.get("legend");
+            return lDiv;
+        }
+        legendControl.addTo(map);
+    }
+
     //function to deal with the basemap toggle
     function baseMapControl() {
-        
+
         //initial basemap toggle value
         var baseName = $('#togGroup input').val();
         var tileLayer = L.esri.basemapLayer(baseName).addTo(map);
         var baseLabels = L.esri.basemapLayer(baseName + 'Labels').addTo(map);
 
         $('#togGroup input').change(function (e) {
-            
+
             map.removeLayer(tileLayer);
             map.removeLayer(baseLabels);
 
@@ -136,8 +145,9 @@
             //.within(bounds)
             .intersects(bounds)
             //.nearby(currentLocation.getLatLng(), 800000)
-            .fields(['OBJECTID', 'DFIRM_ID', 'FLD_ZONE', 'SFHA_TF', 'SHAPE.AREA'])
-            .where("SHAPE.AREA >= '.000001'")
+            .fields(['OBJECTID', 'DFIRM_ID', 'FLD_ZONE', 'SFHA_TF'])
+            //.where("SHAPE.AREA >= '.000001'")
+            .where("NOT ZONE_SUBTY = 'AREA OF MINIMAL FLOOD HAZARD'")
             .precision(4)
             .simplify(map, 0.30)
             .run(function (error, featureCollection, response) {
@@ -157,26 +167,26 @@
     function makeMap(data) {
 
         var floodLayer = L.geoJson(data, {
-            
+
             //style it based on flood zone type
             style: function (feature) {
 
-                if (feature.properties["FLD_ZONE"] == 'X') {
-                    return {
-                        color: '#448ee4',
-                        fillOpacity: 0.2,
-                        weight: 1
-                    }
-                } else {
-                    return {
+                    if (feature.properties["FLD_ZONE"] == 'X') {
+                        return {
+                            color: '#448ee4',
+                            fillOpacity: 0.2,
+                            weight: 1
+                        }
+                    } else {
+                        return {
 
-                        color: '#dc2b28',
-                        fillOpacity: 0.2,
-                        weight: 1
+                            color: '#dc2b28',
+                            fillOpacity: 0.2,
+                            weight: 1
+                        }
                     }
                 }
-            }
-            //add it to a group so I can remove it when a user searches for a new area
+                //add it to a group so I can remove it when a user searches for a new area
         }).addTo(floodLayerGroup);
 
         //add popup
@@ -224,12 +234,12 @@
 
         //eventually - highlight the legend and all of those zones will 
         //highlight on the map
-        
-      /*  $('#legend span').hover(function () {
-            $(this).css("border", "2px solid yellow");
-        }, function () {
-            $(this).css("border", "none");
-        }); */
+
+        /*  $('#legend span').hover(function () {
+              $(this).css("border", "2px solid yellow");
+          }, function () {
+              $(this).css("border", "none");
+          }); */
     }
 
     //when an address is entered and you hit enter or the button,
@@ -243,7 +253,7 @@
 
         });
     }
-    
+
     function findNewLocation(latLng) {
 
         //remove the current marker
@@ -264,7 +274,7 @@
         center = map.getCenter();
         //new query with new bounds
         queryFloodMap(bounds);
-        console.log(bounds);
+        //console.log(bounds);
 
     }
 
