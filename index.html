@@ -26,22 +26,21 @@
                 <div class='txt-l w-full mx-auto mt6 align-center'>
                     <p>The FEMA Flood Maps are unnecessarily complicated. This map hopes to simplify them.</p>
 
-                    <div id='explanationContent' class="flex-parent bg-white flex-parent--center-main">
+                    <div id='explanationContent' class="flex-parent mt6 bg-white flex-parent--center-main">
 
-                        <div id='exColor' class="flex-child flex-child--no-shrink w36">
+                     <!--   <div id='exColor' class="flex-child flex-child--no-shrink w36">
 
                             <span class="w30 h30" style="opacity:0.8;background-color:#dc2b28"></span>
                             <span class="w30 h30" style="opacity:0.8;background-color:#448ee4"></span>
 
-                        </div>
-                        <div id='exLabel' class="txt-l flex-child w-auto">
+                        </div> -->
+                        <div id='exLabel' class="txt-l w-auto ">
 
-                            <p id="sideLabel">100-year Flood Zone</p>
-                            <p id="sideLabel-bot">500-year Flood Zone</p>
+                            <p id="sideLabel" class="p6 txt-bold" style="opacity:0.8;background-color:#dc2b28">100-year Flood Zone</p>
+                            <p id="sideLabel-bot" class="p6 txt-bold" style="opacity:0.8;background-color:#448ee4">500-year Flood Zone</p>
 
                         </div>
                     </div>
-
                 </div>
 
                 <div id="accordion" class='txt-m w-full mx-auto mt6'>
@@ -132,6 +131,10 @@
                 <label class='toggle-container'>
                     <input name='toggle' value='Imagery' type='radio' />
                     <div class='toggle unround'>Imagery</div>
+                </label>
+                <label class='toggle-container'>
+                    <input name='toggle' value='Topographic' type='radio' />
+                    <div class='toggle unround'>Topographic</div>
                 </label>
             </div>
 

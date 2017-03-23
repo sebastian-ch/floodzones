@@ -24,7 +24,7 @@
         currentLocation,
         radiusLocation,
         floodLayerGroup = L.layerGroup(); //layergroup of flood maps
-    
+
     //add legend control, basemap control,
     //basemap change function
     addControls();
@@ -69,7 +69,7 @@
 
     //if you find the location, add a marker and reset the bounds
     function onLocationFound(e) {
-        
+
         currentLocation = L.marker(e.latlng).addTo(map);
         //radiusLocation = L.circle(e.latlng, {radius: 5000});
         //radiusLocation.addTo(map);
@@ -84,9 +84,7 @@
 
     //if you don't find the location, use the initial map state
     function onLocationError() {
-        
-        
-        
+
         map.setView([37.5328, -77.4318], 14);
         var bounds = map.getBounds();
         var center = map.getCenter();
@@ -126,15 +124,22 @@
         $('#togGroup input').change(function (e) {
 
             map.removeLayer(tileLayer);
-            map.removeLayer(baseLabels);
+
+            if (baseLabels) {
+                map.removeLayer(baseLabels);
+            }
 
             baseName = $(this).val();
+            console.log(baseName);
 
             tileLayer = L.esri.basemapLayer(baseName);
-            baseLabels = L.esri.basemapLayer(baseName + 'Labels').addTo(map);
-
             tileLayer.addTo(map);
-            baseLabels.addTo(map);
+
+            if (baseName != 'Topographic') {
+                baseLabels = L.esri.basemapLayer(baseName + 'Labels');
+                baseLabels.addTo(map);
+            }
+
         });
 
     }
@@ -200,10 +205,9 @@
         //add popup
         var popupTemplate = "<h3>Flood Zone: {FLD_ZONE}</h3>";
 
-        floodLayer.bindPopup(function (e) {
-            return L.Util.template(popupTemplate, e.feature.properties)
-        });
-
+         floodLayer.bindPopup(function (e) {
+             return L.Util.template(popupTemplate, e.feature.properties)
+         });
 
         //add basemap at the same time as the data loads
         //baseMapControl();

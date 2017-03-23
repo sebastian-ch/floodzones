@@ -1,12 +1,13 @@
 #explanationContent span {
     float: left;
-    margin: 0px 10px 4px 0; */
+    margin: 0px 10px 4px 0;
+    */
 }
 
 #sideLabel-bot {
-   margin-top: 4.5px;
+    background-color: '#448ee4';
+    margin-top: 4.5px;
 }
-
 
 #sideLabel:after {
     content: '';
@@ -37,7 +38,7 @@
     clear: both;
 }
 
-#togGroup{
+#togGroup {
     display: inline-block;
     border: 1px solid black;
     padding: 10px;
@@ -49,7 +50,6 @@ h3:hover {
     opacity: 0.6;
     background-color: gray;
     text-decoration: underline;
-    
 }
 
 #accordion:hover {
