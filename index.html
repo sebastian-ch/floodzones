@@ -18,39 +18,35 @@
         <div class='col col--12 col--3-ml p12 pb6 viewport-third viewport-full-ml'>
             <div class='h-full scroll-auto mr3'>
                 <h1 class='txt-xl mb3 align-center'>Find Your FEMA Flood Zone</h1>
-                <div class='w-full h36'>
-                    <input class='input unround w-auto h-auto fl' id="search" placeholder='Enter address here' />
-                    <button class='btn btn--s ml6 my3 unround'>Enter</button>
+                
+                <p class='txt-l w-full mx-auto mt6 mb18 align-center'>The FEMA Flood Maps are unnecessarily complicated. This map hopes to simplify them.</p>
+                
+                <div class='w-full h36 align-center'>
+                    <input class='input unround ml12 w240 h-auto fl' id="search" placeholder='Enter address here' />
+                    <button class='btn btn--s my3 unround'>Search</button>
                 </div>
 
-                <div class='txt-l w-full mx-auto mt6 align-center'>
-                    <p>The FEMA Flood Maps are unnecessarily complicated. This map hopes to simplify them.</p>
+                <div class='txt-l w-full mx-auto mt24 align-center'>
 
-                    <div id='explanationContent' class="flex-parent mt6 bg-white flex-parent--center-main">
+                    <div id='explanationContent' class="flex-parent my6 bg-white flex-parent--center-main">
 
-                     <!--   <div id='exColor' class="flex-child flex-child--no-shrink w36">
-
-                            <span class="w30 h30" style="opacity:0.8;background-color:#dc2b28"></span>
-                            <span class="w30 h30" style="opacity:0.8;background-color:#448ee4"></span>
-
-                        </div> -->
                         <div id='exLabel' class="txt-l w-auto ">
 
-                            <p id="sideLabel" class="p6 txt-bold" style="opacity:0.8;background-color:#dc2b28">100-year Flood Zone</p>
+                            <p id="sideLabel" class="p6 txt-bold" style="opacity:0.8;background-color:#dc2b28">100-Year Flood Zone</p>
                             <p id="sideLabel-bot" class="p6 txt-bold" style="opacity:0.8;background-color:#448ee4">500-year Flood Zone</p>
 
                         </div>
                     </div>
                 </div>
 
-                <div id="accordion" class='txt-m w-full mx-auto mt6'>
-                    <h3 class='align-center bg-gray-faint border-b border--white'>About</h3>
+                <div id="accordion" class='txt-m w-full mx-auto mt12'>
+                    <h3 class='align-center bg-gray-light border-b border--white p3'>About</h3>
                     <div class='p6'>
-                        <p class='txt-m m3'>Flood insurance is federally required for all structures within the Special Flood Hazard Area (SFHA, or the 100-year flood zone) that carry a federally backed mortage.</p>
+                        <p class='txt-m m3'>Flood insurance is federally required for all structures within the 100-year flood zone (Special Flood Hazard Area, SFHA) that carry a federally backed mortage.</p>
                         <p class='txt-m m3'>The FEMA flood maps are <b>NOT</b> property or structure specific - this causes a lot of confusion. If your lender or insurance company tells you that you are within the SFHA, that is their interpretation of the flood maps. They usually hire a flood determination company to do that for them. This page shows the maps that your lender should have used in their determination.</p>
                         <p class='txt-m m3'>The <b>only way</b> to receive a structure or property specific determination from FEMA is to apply for a <a href="https://hazards.fema.gov/femaportal/onlinelomc/signin" class='link' target="_blank">Letter of Map Amendment (LOMA)</a>.</p>
                     </div>
-                    <h3 class='align-center bg-gray-faint border-b border--white'>Zone Definitions</h3>
+                    <h3 class='align-center bg-gray-light border-b border--white p3'>Zone Definitions</h3>
                     <div class='p3'>
                         <h3 class='txt-m align-center txt-underline'>Special Flood Hazard Areas (SFHA)</h3>
                         <p class='txt-s mb6'>All zones starting with <b>V</b> or <b>A</b> are within the 100-year flood area. The zones are differentiated by type of flooding or information available.This map shows these zones in red.</p>
@@ -76,7 +72,7 @@
                         </div>
                         <a href="https://www.fema.gov/flood-zones" target='_blank' class='link txt-xs'>More About FEMA Flood Zone Definitions</a>
                     </div>
-                    <h3 class='align-center bg-gray-faint border-b border--white'>Useful Links</h3>
+                    <h3 class='align-center bg-gray-light border-b border--white p3'>Useful Links</h3>
                     <div class='p6'>
                         <ul class='txt-s'>
                             <li><a href="http://msc.fema.gov/portal" target='_blank' class='link txt-s'>Map Service Center</a></li>
@@ -85,7 +81,7 @@
                         </ul>
 
                     </div>
-                    <h3 class='align-center bg-gray-faint border-b border--white'>Common Abbreviations</h3>
+                    <h3 class='align-center bg-gray-light border-b border--white p3'>Common Abbreviations</h3>
                     <div class='p6'>
                         <ul class='txt-s'>
                             <li><b>SFHA</b> - Special Flood Hazard Area</li>
@@ -101,11 +97,7 @@
                     </div>
                 </div>
 
-
-
-                <!--      <div class='txt-m'>The flood maps are <b>NOT</b> property or structure specific, regardless of what anyone tells you. This is where much of the confusion arises from. If your lender or insurance company tells you that you are within the SFHA, that is their interpretation of the flood maps. The <b>only way</b> to receive a structure or property specific determination is to apply for a <a href="https://hazards.fema.gov/femaportal/onlinelomc/signin" class='link' target="_blank">Letter of Map Amendment(LOMA).</a></div> -->
-
-                <footer class='mt6 bg-gray-faint txt-xs'>
+                <footer class='mt6 bg-gray-faint txt-xs absolute bottom pb3'>
                     <ul>
                         <li>Map authored by <a class='link' href='https://sebastian-ch.github.io/' target="_blank">Sebastian Hancock</a></li>
                     </ul>
@@ -139,7 +131,7 @@
             </div>
 
             <div id='legend' class="bg-white">
-                <h5 class='txt-bold txt-l mb3 w-full mx-auto'>Flood Zones Visible</h5>
+                <h5 class='txt-bold txt-l mb3 w180 mx-auto'>Flood Zones Visible</h5>
                 <div id='legendContent' class="flex-parent bg-white">
                     <div id='addColor' class="flex-child flex-child--no-shrink w30"></div>
                     <div id='addLabel' class="flex-child flex-child--grow"></div>

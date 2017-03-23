@@ -50,6 +50,7 @@ h3:hover {
     opacity: 0.6;
     background-color: gray;
     text-decoration: underline;
+    border: 1px solid black;
 }
 
 #accordion:hover {

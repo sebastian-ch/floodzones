@@ -71,23 +71,26 @@
     function onLocationFound(e) {
 
         currentLocation = L.marker(e.latlng).addTo(map);
-        //radiusLocation = L.circle(e.latlng, {radius: 5000});
-        //radiusLocation.addTo(map);
+        radiusLocation = L.circle(e.latlng, {
+            radius: 5000,
+            opacity: 0,
+            fillOpacity: 0
+        });
+        radiusLocation.addTo(map);
+        radiusLocation.bringToBack();
 
-        map.setZoom(14);
+        map.setZoom(15);
         var bounds = map.getBounds();
         console.log(bounds);
-        var center = map.getCenter();
 
-        queryFloodMap(bounds);
+        queryFloodMap(radiusLocation.getBounds());
     }
 
     //if you don't find the location, use the initial map state
     function onLocationError() {
 
-        map.setView([37.5328, -77.4318], 14);
+        map.setView([37.5328, -77.4318], 15);
         var bounds = map.getBounds();
-        var center = map.getCenter();
         queryFloodMap(bounds);
     }
 
@@ -154,7 +157,6 @@
     function queryFloodMap(bounds) {
 
         floodZoneService.query()
-            //.within(bounds)
             .intersects(bounds)
             .fields(['OBJECTID', 'FLD_ZONE', 'SFHA_TF'])
             .where("SHAPE.AREA >= '.000001'")
@@ -162,13 +164,6 @@
             .precision(4)
             .simplify(map, 0.25)
             .run(function (error, featureCollection, response) {
-
-                //console.log(featureCollection);
-                //console.log(error);
-                //console.log(response);
-
-                //console.log(typeof(featureCollection.features));
-                //console.log(featureCollection);
 
                 makeMap(featureCollection);
                 createLegend(featureCollection);
@@ -179,55 +174,63 @@
     //add the queried map data to the map
     function makeMap(data) {
 
+        floodLayerGroup.clearLayers();
+        
         var floodLayer = L.geoJson(data, {
 
             //style it based on flood zone type
             style: function (feature) {
 
-                    if (feature.properties["FLD_ZONE"] == 'X') {
-                        return {
-                            color: '#448ee4',
-                            fillOpacity: 0.2,
-                            weight: 1
-                        }
-                    } else {
-                        return {
-
-                            color: '#dc2b28',
-                            fillOpacity: 0.2,
-                            weight: 1
-                        }
+                if (feature.properties["FLD_ZONE"] == 'X') {
+                    return {
+                        color: '#448ee4',
+                        fillOpacity: 0.2,
+                        weight: 1
                     }
+                } else {
+                    return {
+
+                        color: '#dc2b28',
+                        fillOpacity: 0.2,
+                        weight: 1
+                    }
+                }
+            },
+            onEachFeature: function (feature, layer) {
+                    var popupTemplate = "<p>Flood Zone: {FLD_ZONE}</p>";
+
+                    layer.bindPopup(function (e) {
+                        return L.Util.template(popupTemplate, e.feature.properties)
+                    });
+
                 }
                 //add it to a group so I can remove it when a user searches for a new area
         }).addTo(floodLayerGroup);
 
-        //add popup
-        var popupTemplate = "<h3>Flood Zone: {FLD_ZONE}</h3>";
 
-         floodLayer.bindPopup(function (e) {
-             return L.Util.template(popupTemplate, e.feature.properties)
-         });
-
-        //add basemap at the same time as the data loads
-        //baseMapControl();
         floodLayerGroup.addTo(map);
         //remove the loading spinner
         $('.loading').hide();
-        createLocationPopup(floodLayer);
+        createLocationPopup(floodLayerGroup);
 
     }
+
+    map.on('dragend', function () {
+
+        updateOnMove();
+
+    })
 
     //creates the legend dynamically
     //only shows the flood zones that appear on the map instead of all of them.
     function createLegend(data) {
 
+        document.getElementById("addColor").innerHTML = '';
+        document.getElementById("addLabel").innerHTML = '';
+
         var Qjson = jsonQ(data);
         var allZones = Qjson.find('FLD_ZONE');
         var legendContent = allZones.unique();
-        /*var shap1 = Qjson.find('SHAPE.AREA');
-        var shap1Content = shap1.unique();
-        console.log(shap1Content); */
         var legendColor;
 
         for (var i = 0; i < legendContent.length; i++) {
@@ -243,15 +246,6 @@
 
             document.getElementById("addLabel").innerHTML += '<p id="label">' + legendContent[i] + '</p>';
         }
-
-        //eventually - highlight the legend and all of those zones will 
-        //highlight on the map
-
-        /*  $('#legend span').hover(function () {
-              $(this).css("border", "2px solid yellow");
-          }, function () {
-              $(this).css("border", "none");
-          }); */
     }
 
     //when an address is entered and you hit enter or the button,
@@ -262,25 +256,40 @@
 
             searchLatLng = L.latLng(results.results["0"].latlng.lat, results.results["0"].latlng.lng);
             findNewLocation(searchLatLng);
-
         });
+    }
+
+    function updateOnMove() {
+
+        currentLocation.remove();
+
+        if (radiusLocation) {
+            radiusLocation.remove();
+        }
+
+        var center = map.getCenter();
+        radiusLocation = L.circle(center, {
+            radius: 5000,
+            opacity: 0,
+            fillOpacity: 0
+        });
+        radiusLocation.addTo(map);
+        queryFloodMap(radiusLocation.getBounds());
+
+
+
     }
 
     function findNewLocation(latLng) {
 
         //remove the current marker
         currentLocation.remove();
-
-        //clear legend info
-        document.getElementById("addColor").innerHTML = '';
-        document.getElementById("addLabel").innerHTML = '';
+        radiusLocation.remove();
 
         //add a new marker at the new location
         currentLocation = L.marker(searchLatLng).addTo(map);
-        map.setView(latLng, 14);
+        map.setView(latLng, 15);
 
-        //clear old flood data from map
-        floodLayerGroup.clearLayers();
         //get new bounds and center
         bounds = map.getBounds();
         center = map.getCenter();
@@ -302,5 +311,6 @@
             currentLocation.bindPopup("This marker falls outside of the 100-year and 500-year flood zone").openPopup();
         }
     }
+
 
 })();
