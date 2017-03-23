@@ -8,23 +8,28 @@
 
     var map = L.map('map', {
             zoomSnap: .1,
-            center: [37.5328, -77.4318],
-            zoom: 14,
+            //center: [37.5328, -77.4318],
+            //zoom: 14,
             maxZoom: 18,
             minZoom: 12
 
         }),
-        service = L.esri.featureLayerService({
+        floodZoneService = L.esri.featureLayerService({
             url: 'https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28'
         }),
+        //lomaService = L.esri.featureLayerService({}),
+        //firmPanelService = L.esri.featureLayerService({}),
         searchAddress = "",
         searchLatLng, //inputAddress
         currentLocation,
         radiusLocation,
         floodLayerGroup = L.layerGroup(); //layergroup of flood maps
     
+    //add legend control, basemap control,
+    //basemap change function
     addControls();
     baseMapControl();
+    //initial basemap
     var tileLayer = L.esri.basemapLayer('Gray').addTo(map);
     var baseLabels = L.esri.basemapLayer('GrayLabels').addTo(map);
 
@@ -80,7 +85,9 @@
     //if you don't find the location, use the initial map state
     function onLocationError() {
         
-         map.setZoom(14);
+        
+        
+        map.setView([37.5328, -77.4318], 14);
         var bounds = map.getBounds();
         var center = map.getCenter();
         queryFloodMap(bounds);
@@ -141,20 +148,19 @@
     //once complete, run makeMap() and createLegend() with data
     function queryFloodMap(bounds) {
 
-        service.query()
+        floodZoneService.query()
             //.within(bounds)
             .intersects(bounds)
-            //.nearby(currentLocation.getLatLng(), 800000)
-            .fields(['OBJECTID', 'DFIRM_ID', 'FLD_ZONE', 'SFHA_TF'])
+            .fields(['OBJECTID', 'FLD_ZONE', 'SFHA_TF'])
             .where("SHAPE.AREA >= '.000001'")
             .where("NOT ZONE_SUBTY = 'AREA OF MINIMAL FLOOD HAZARD'")
             .precision(4)
-            .simplify(map, 0.30)
+            .simplify(map, 0.25)
             .run(function (error, featureCollection, response) {
 
-                console.log(featureCollection);
-                console.log(error);
-                console.log(response);
+                //console.log(featureCollection);
+                //console.log(error);
+                //console.log(response);
 
                 //console.log(typeof(featureCollection.features));
                 //console.log(featureCollection);
