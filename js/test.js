@@ -3,14 +3,15 @@
     //nav accordion
     $('#accordion').accordion({
         active: false,
-        collapsible: true
+        collapsible: true,
+        heightStyle: "content"
     });
 
     var map = L.map('map', {
             zoomSnap: .1,
             //center: [37.5328, -77.4318],
             //zoom: 14,
-            maxZoom: 18,
+            maxZoom: 17,
             minZoom: 12
 
         }),
@@ -175,35 +176,35 @@
     function makeMap(data) {
 
         floodLayerGroup.clearLayers();
-        
+
         var floodLayer = L.geoJson(data, {
 
             //style it based on flood zone type
             style: function (feature) {
 
-                if (feature.properties["FLD_ZONE"] == 'X') {
-                    return {
-                        color: '#448ee4',
-                        fillOpacity: 0.2,
-                        weight: 1
-                    }
-                } else {
-                    return {
+                    if (feature.properties["FLD_ZONE"] == 'X') {
+                        return {
+                            color: '#448ee4',
+                            fillOpacity: 0.2,
+                            weight: 1
+                        }
+                    } else {
+                        return {
 
-                        color: '#dc2b28',
-                        fillOpacity: 0.2,
-                        weight: 1
+                            color: '#dc2b28',
+                            fillOpacity: 0.2,
+                            weight: 1
+                        }
                     }
                 }
-            },
-            onEachFeature: function (feature, layer) {
-                    var popupTemplate = "<p>Flood Zone: {FLD_ZONE}</p>";
+                /*   onEachFeature: function (feature, layer) {
+                           var popupTemplate = "<p>Flood Zone: {FLD_ZONE}</p>";
 
-                    layer.bindPopup(function (e) {
-                        return L.Util.template(popupTemplate, e.feature.properties)
-                    });
+                           layer.bindPopup(function (e) {
+                               return L.Util.template(popupTemplate, e.feature.properties)
+                           });
 
-                }
+                       } */
                 //add it to a group so I can remove it when a user searches for a new area
         }).addTo(floodLayerGroup);
 
@@ -211,7 +212,8 @@
         floodLayerGroup.addTo(map);
         //remove the loading spinner
         $('.loading').hide();
-        createLocationPopup(floodLayerGroup);
+        retrieveInfo(floodLayerGroup);
+        //createLocationPopup(floodLayerGroup);
 
     }
 
@@ -275,9 +277,6 @@
         });
         radiusLocation.addTo(map);
         queryFloodMap(radiusLocation.getBounds());
-
-
-
     }
 
     function findNewLocation(latLng) {
@@ -295,13 +294,11 @@
         center = map.getCenter();
         //new query with new bounds
         queryFloodMap(bounds);
-        //console.log(bounds);
-
     }
 
     //use point in polygon to find out what flood zone the marker is in
     //and give it a popup
-    function createLocationPopup(floodLayer) {
+  /*  function createLocationPopup(floodLayer) {
 
         var results = leafletPip.pointInLayer(currentLocation.getLatLng(), floodLayer);
         //console.log(results);
@@ -310,7 +307,66 @@
         } else {
             currentLocation.bindPopup("This marker falls outside of the 100-year and 500-year flood zone").openPopup();
         }
-    }
+    } */
 
+    function retrieveInfo(floodLayerGroup) {
+
+        var info = $('#info');
+
+        floodLayerGroup.eachLayer(function (layer) {
+
+            layer.on('mouseover', function (e) {
+
+                info.removeClass('none').show();
+                var props = e.layer.feature.properties["FLD_ZONE"];
+
+                $('#info span').html(props);
+
+                e.layer.setStyle({
+                    fill: 'yellow'
+                });
+            });
+
+            layer.on('mouseout', function (e) {
+
+                var props = e.layer.feature.properties["FLD_ZONE"];
+                info.hide();
+
+                if (props != 'X') {
+
+                    e.layer.setStyle({
+                        fill: '#dc2b28'
+                    });
+                } else {
+                    e.layer.setStyle({
+                        fill: '#448ee4'
+                    });
+                }
+            });
+
+        });
+
+        $(document).mousemove(function (e) {
+            // first offset from the mouse position of the info window
+            info.css({
+                "left": e.pageX + 6,
+                "top": e.pageY - info.height() - 25
+            });
+
+            // if it crashes into the top, flip it lower right
+            if (info.offset().top < 4) {
+                info.css({
+                    "top": e.pageY + 15
+                });
+            }
+            // if it crashes into the right, flip it to the left
+            if (info.offset().left + info.width() >= $(document).width() - 40) {
+                info.css({
+                    "left": e.pageX - info.width() - 80
+                });
+            }
+        });
+
+    }
 
 })();

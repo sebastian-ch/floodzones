@@ -56,3 +56,6 @@ h3:hover {
 #accordion:hover {
     cursor: pointer;
 }
+#info {
+    z-index: 600;
+}
