@@ -91,8 +91,15 @@
     function onLocationError() {
 
         map.setView([37.5328, -77.4318], 15);
-        var bounds = map.getBounds();
-        queryFloodMap(bounds);
+        
+        radiusLocation = L.circle([37.5328, -77.4318], {
+            radius: 5000,
+            opacity: 0,
+            fillOpacity: 0
+        });
+        radiusLocation.addTo(map);
+        radiusLocation.bringToBack();
+        queryFloodMap(radiusLocation.getBounds());
     }
 
     function addControls() {
