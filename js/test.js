@@ -276,7 +276,9 @@
         if (currentLocation) {
             currentLocation.remove();
         }
-        radiusLocation.remove();
+        if (radiusLocation) {
+            radiusLocation.remove();
+        }
 
         //add a new marker at the new location
         currentLocation = L.marker(searchLatLng).addTo(map);
