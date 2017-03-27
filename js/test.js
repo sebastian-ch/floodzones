@@ -11,8 +11,8 @@
             zoomSnap: .1,
             //center: [37.5328, -77.4318],
             //zoom: 14,
-            maxZoom: 17,
-            minZoom: 12
+            maxZoom: 16,
+            minZoom: 14
 
         }),
         floodZoneService = L.esri.featureLayerService({
@@ -109,14 +109,14 @@
 
 
         //add legend control
-        var legendControl = L.control({
-            position: 'bottomleft'
-        });
-        legendControl.onAdd = function (map) {
-            var lDiv = L.DomUtil.get("legend");
-            return lDiv;
-        }
-        legendControl.addTo(map);
+        /*  var legendControl = L.control({
+              position: 'bottomleft'
+          });
+          legendControl.onAdd = function (map) {
+              var lDiv = L.DomUtil.get("legend");
+              return lDiv;
+          }
+          legendControl.addTo(map); */
     }
 
     //function to deal with the basemap toggle
@@ -167,8 +167,7 @@
             .run(function (error, featureCollection, response) {
 
                 makeMap(featureCollection);
-                createLegend(featureCollection);
-
+                //createLegend(featureCollection);
             })
     }
 
@@ -197,17 +196,8 @@
                         }
                     }
                 }
-                /*   onEachFeature: function (feature, layer) {
-                           var popupTemplate = "<p>Flood Zone: {FLD_ZONE}</p>";
-
-                           layer.bindPopup(function (e) {
-                               return L.Util.template(popupTemplate, e.feature.properties)
-                           });
-
-                       } */
                 //add it to a group so I can remove it when a user searches for a new area
         }).addTo(floodLayerGroup);
-
 
         floodLayerGroup.addTo(map);
         //remove the loading spinner
@@ -225,30 +215,31 @@
 
     //creates the legend dynamically
     //only shows the flood zones that appear on the map instead of all of them.
-    function createLegend(data) {
+    //currently not using this - 3/26/17
+    /* function createLegend(data) {
 
-        document.getElementById("addColor").innerHTML = '';
-        document.getElementById("addLabel").innerHTML = '';
+         document.getElementById("addColor").innerHTML = '';
+         document.getElementById("addLabel").innerHTML = '';
 
-        var Qjson = jsonQ(data);
-        var allZones = Qjson.find('FLD_ZONE');
-        var legendContent = allZones.unique();
-        var legendColor;
+         var Qjson = jsonQ(data);
+         var allZones = Qjson.find('FLD_ZONE');
+         var legendContent = allZones.unique();
+         var legendColor;
 
-        for (var i = 0; i < legendContent.length; i++) {
+         for (var i = 0; i < legendContent.length; i++) {
 
-            if (legendContent[i] == 'X') {
-                legendColor = '#448ee4';
-            } else {
-                legendColor = '#dc2b28';
-            }
+             if (legendContent[i] == 'X') {
+                 legendColor = '#448ee4';
+             } else {
+                 legendColor = '#dc2b28';
+             }
 
-            document.getElementById("addColor").innerHTML +=
-                '<span class="w24 h24" style="opacity:0.4;background-color:' + legendColor + '"></span>';
+             document.getElementById("addColor").innerHTML +=
+                 '<span class="w24 h24" style="opacity:0.4;background-color:' + legendColor + '"></span>';
 
-            document.getElementById("addLabel").innerHTML += '<p id="label">' + legendContent[i] + '</p>';
-        }
-    }
+             document.getElementById("addLabel").innerHTML += '<p id="label">' + legendContent[i] + '</p>';
+         }
+     } */
 
     //when an address is entered and you hit enter or the button,
     //geocode the address and call findNewLocation() with the latlng
@@ -298,18 +289,70 @@
 
     //use point in polygon to find out what flood zone the marker is in
     //and give it a popup
-  /*  function createLocationPopup(floodLayer) {
+    /*  function createLocationPopup(floodLayer) {
 
-        var results = leafletPip.pointInLayer(currentLocation.getLatLng(), floodLayer);
-        //console.log(results);
-        if (results.length != 0) {
-            currentLocation.bindPopup("The marker falls in flood zone " + results["0"].feature.properties.FLD_ZONE).openPopup();
-        } else {
-            currentLocation.bindPopup("This marker falls outside of the 100-year and 500-year flood zone").openPopup();
-        }
-    } */
+          var results = leafletPip.pointInLayer(currentLocation.getLatLng(), floodLayer);
+          //console.log(results);
+          if (results.length != 0) {
+              currentLocation.bindPopup("The marker falls in flood zone " + results["0"].feature.properties.FLD_ZONE).openPopup();
+          } else {
+              currentLocation.bindPopup("This marker falls outside of the 100-year and 500-year flood zone").openPopup();
+          }
+      } */
 
     function retrieveInfo(floodLayerGroup) {
+
+        var zoneDef = {
+
+            A: {
+                zone: "A",
+                definition: "This area is within the 100-year flood zone, but a detailed hydraulic analysis has not been performed, so no flood depths are shown.",
+                url: "https://www.fema.gov/zone"
+            },
+
+            AE: {
+
+                zone: "AE",
+                definition: "This area is within the 100-year flood zone and base flood elevations have been calculated.",
+                url: "https://www.fema.gov/zone-ae-and-a1-30"
+            },
+
+            AO: {
+
+                zone: "AO",
+                definition: "This area is within the 100-year flood zone and subject to sheet flow flooding on a sloped terrain. Average flood depths in this area are between 1 and 3 feet. Some AO Zones are areas with high flood velocities such as alluvial fans and washes.",
+                url: "https://www.fema.gov/zone-ao"
+            },
+
+            AH: {
+
+                zone: "AH",
+                definition: "This area is within the 100-year flood zone and subject to shallow flooding - usually areas of ponding. Average depths are between 1 and 3 feet.",
+                url: "https://www.fema.gov/zone-ah"
+            },
+
+            V: {
+
+                zone: "V",
+                definition: "This area is within the 100-year flood zone and takes into account storm-induced wave action. Detailed hydraulic analysis has not been performed, so no flood depths are shown",
+                url: "https://www.fema.gov/zone-v"
+            },
+
+            VE: {
+
+                zone: "VE",
+                definition: "This area is within the 100-year flood zone and usually represents coastal areas. Base flood elevations have been calculated and take into account storm-induced wave action.",
+                url: "https://www.fema.gov/zone-ve-and-v1-30"
+            },
+
+            X: {
+
+                zone: "X",
+                definition: " This are is outside of the 100-year flood zone but within the 500-year flood zone. Flood insurance is not federally required in these areas.",
+                url: "https://www.fema.gov/flood-zones"
+            }
+
+        };
 
         var info = $('#info');
 
@@ -320,7 +363,8 @@
                 info.removeClass('none').show();
                 var props = e.layer.feature.properties["FLD_ZONE"];
 
-                $('#info span').html(props);
+                $('#info span').html("<b>Flood Zone: " + props +
+                    "</b><br><p class='txt-s'>" + zoneDef[props].definition + "</p>");
 
                 e.layer.setStyle({
                     fill: 'yellow'
