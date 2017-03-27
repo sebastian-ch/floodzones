@@ -273,7 +273,9 @@
     function findNewLocation(latLng) {
 
         //remove the current marker
-        currentLocation.remove();
+        if (currentLocation) {
+            currentLocation.remove();
+        }
         radiusLocation.remove();
 
         //add a new marker at the new location
@@ -348,7 +350,7 @@
             X: {
 
                 zone: "X",
-                definition: " This are is outside of the 100-year flood zone but within the 500-year flood zone. Flood insurance is not federally required in these areas.",
+                definition: " This area is outside the 100-year flood zone but within the 500-year flood zone. Flood insurance is not federally required in these areas.",
                 url: "https://www.fema.gov/flood-zones"
             }
 
