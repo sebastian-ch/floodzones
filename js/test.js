@@ -263,7 +263,9 @@
 
     function updateOnMove() {
 
-        currentLocation.remove();
+        if (currentLocation) {
+            currentLocation.remove();
+        }
 
         if (radiusLocation) {
             radiusLocation.remove();
