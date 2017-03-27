@@ -159,6 +159,8 @@
     //intersect the bounds of the map,
     //only includes needed fields,
     //where the area is larger than .000001,
+    //where the subtype != 'AREA OF MINIMAL FLOOD HAZARD',
+    //which queries out the > 500 year flood zone
     //sets the precision to 4 decimal places,
     //simplifies polygons (0-1 scale)
     //once complete, run makeMap() and createLegend() with data
@@ -313,6 +315,7 @@
 
     function retrieveInfo(floodLayerGroup) {
 
+        //popup information
         var zoneDef = {
 
             A: {
