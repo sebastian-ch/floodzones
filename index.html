@@ -23,11 +23,15 @@
                 <p class='txt-l w-full mx-auto mt6 mb18 align-center'>The FEMA Flood Maps are complicated. This map hopes to simplify them.</p>
                 <p class='txt-m w-full mx-auto mt6 mb18 align-center'>If the map doesn't geolocate automatically, enter your address below to see the FEMA flood zones around your area.</p>
 
-                <div class='w-full h36 align-center'>
-                    <input class='input unround ml12 w240 h-auto fl border--black' id="search" placeholder='Enter address here' />
-                    <button class='btn btn--s my3 unround'>Search</button>
+                <div class='grid grid--gut12'>
+                    <div class='col col--9'>
+                        <input class='input unround border--black' id="search" placeholder='Enter address here' />
+                    </div>
+
+                    <button class='col col--3 btn btn--s unround'>Search</button>
+
                 </div>
-                
+
                 <p class='txt-m w-full mx-auto mt18 mb18 align-center'>Once loaded, hover over the zones for a more detailed definition and explanation.</p>
 
                 <div class='txt-l w-full mx-auto mt24 align-center'>
@@ -135,7 +139,7 @@
                 </label>
             </div>
 
-        <!--    <div id='legend' class="bg-white">
+            <!--    <div id='legend' class="bg-white">
                 <h5 class='txt-bold txt-l mb3 w-auto mx-auto'>Flood Zones Visible</h5>
                 <div id='legendContent' class="flex-parent bg-white">
                     <div id='addColor' class="flex-child flex-child--no-shrink w30"></div>
