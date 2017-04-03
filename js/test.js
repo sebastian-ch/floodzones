@@ -9,10 +9,8 @@
 
     var map = L.map('map', {
             zoomSnap: .1,
-            //center: [37.5328, -77.4318],
-            //zoom: 14,
-            maxZoom: 16,
-            minZoom: 14
+            maxZoom: 18,
+            minZoom: 13
 
         }),
         floodZoneService = L.esri.featureLayerService({
@@ -60,7 +58,6 @@
         setView: true,
     });
 
-
     //if you can locate the user, change the bounds, zoom
     //run map query based off new bounds
     map.on('locationfound', onLocationFound);
@@ -91,7 +88,7 @@
     function onLocationError() {
 
         map.setView([37.5328, -77.4318], 15);
-        
+
         radiusLocation = L.circle([37.5328, -77.4318], {
             radius: 5000,
             opacity: 0,
@@ -113,17 +110,6 @@
             return div;
         }
         baseControl.addTo(map);
-
-
-        //add legend control
-        /*  var legendControl = L.control({
-              position: 'bottomleft'
-          });
-          legendControl.onAdd = function (map) {
-              var lDiv = L.DomUtil.get("legend");
-              return lDiv;
-          }
-          legendControl.addTo(map); */
     }
 
     //function to deal with the basemap toggle
@@ -150,9 +136,7 @@
                 baseLabels = L.esri.basemapLayer(baseName + 'Labels');
                 baseLabels.addTo(map);
             }
-
         });
-
     }
 
     //queries the map service - searches for all features that
@@ -176,7 +160,6 @@
             .run(function (error, featureCollection, response) {
 
                 makeMap(featureCollection);
-                //createLegend(featureCollection);
             })
     }
 
@@ -190,22 +173,22 @@
             //style it based on flood zone type
             style: function (feature) {
 
-                    if (feature.properties["FLD_ZONE"] == 'X') {
-                        return {
-                            color: '#448ee4',
-                            fillOpacity: 0.2,
-                            weight: 1
-                        }
-                    } else {
-                        return {
+                if (feature.properties["FLD_ZONE"] == 'X') {
+                    return {
+                        color: '#448ee4',
+                        fillOpacity: 0.2,
+                        weight: 1
+                    }
+                } else {
+                    return {
 
-                            color: '#dc2b28',
-                            fillOpacity: 0.2,
-                            weight: 1
-                        }
+                        color: '#dc2b28',
+                        fillOpacity: 0.2,
+                        weight: 1
                     }
                 }
-                //add it to a group so I can remove it when a user searches for a new area
+            }
+            //add it to a group so I can remove it when a user searches for a new area
         }).addTo(floodLayerGroup);
 
         floodLayerGroup.addTo(map);
@@ -213,7 +196,6 @@
         $('.loading').hide();
         retrieveInfo(floodLayerGroup);
         //createLocationPopup(floodLayerGroup);
-
     }
 
     map.on('dragend', function () {
@@ -221,34 +203,6 @@
         updateOnMove();
 
     })
-
-    //creates the legend dynamically
-    //only shows the flood zones that appear on the map instead of all of them.
-    //currently not using this - 3/26/17
-    /* function createLegend(data) {
-
-         document.getElementById("addColor").innerHTML = '';
-         document.getElementById("addLabel").innerHTML = '';
-
-         var Qjson = jsonQ(data);
-         var allZones = Qjson.find('FLD_ZONE');
-         var legendContent = allZones.unique();
-         var legendColor;
-
-         for (var i = 0; i < legendContent.length; i++) {
-
-             if (legendContent[i] == 'X') {
-                 legendColor = '#448ee4';
-             } else {
-                 legendColor = '#dc2b28';
-             }
-
-             document.getElementById("addColor").innerHTML +=
-                 '<span class="w24 h24" style="opacity:0.4;background-color:' + legendColor + '"></span>';
-
-             document.getElementById("addLabel").innerHTML += '<p id="label">' + legendContent[i] + '</p>';
-         }
-     } */
 
     //when an address is entered and you hit enter or the button,
     //geocode the address and call findNewLocation() with the latlng
@@ -301,19 +255,6 @@
         //new query with new bounds
         queryFloodMap(bounds);
     }
-
-    //use point in polygon to find out what flood zone the marker is in
-    //and give it a popup
-    /*  function createLocationPopup(floodLayer) {
-
-          var results = leafletPip.pointInLayer(currentLocation.getLatLng(), floodLayer);
-          //console.log(results);
-          if (results.length != 0) {
-              currentLocation.bindPopup("The marker falls in flood zone " + results["0"].feature.properties.FLD_ZONE).openPopup();
-          } else {
-              currentLocation.bindPopup("This marker falls outside of the 100-year and 500-year flood zone").openPopup();
-          }
-      } */
 
     function retrieveInfo(floodLayerGroup) {
 
@@ -374,39 +315,29 @@
 
         floodLayerGroup.eachLayer(function (layer) {
 
-            layer.on('mouseover', function (e) {
+            layer.on('click', function (e) {
 
                 info.removeClass('none').show();
+
                 var props = e.layer.feature.properties["FLD_ZONE"];
 
                 $('#info span').html("<b>Flood Zone: " + props +
                     "</b><br><p class='txt-s'>" + zoneDef[props].definition + "</p>");
 
-                e.layer.setStyle({
-                    fill: 'yellow'
-                });
             });
+
 
             layer.on('mouseout', function (e) {
 
                 var props = e.layer.feature.properties["FLD_ZONE"];
-                info.hide();
-
-                if (props != 'X') {
-
-                    e.layer.setStyle({
-                        fill: '#dc2b28'
-                    });
-                } else {
-                    e.layer.setStyle({
-                        fill: '#448ee4'
-                    });
-                }
+                info.fadeOut();
             });
 
         });
 
-        $(document).mousemove(function (e) {
+
+        $(document).on('click', function (e) {
+
             // first offset from the mouse position of the info window
             info.css({
                 "left": e.pageX + 6,
@@ -425,8 +356,7 @@
                     "left": e.pageX - info.width() - 80
                 });
             }
+
         });
-
     }
-
 })();

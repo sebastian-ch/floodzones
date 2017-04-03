@@ -24,11 +24,11 @@
                 <p class='txt-m w-full mx-auto mt6 mb18 align-center'>If the map doesn't geolocate automatically, enter your address below to see the FEMA flood zones around your area.</p>
 
                 <div class='w-full h36 align-center'>
-                    <input class='input unround ml12 w240 h-auto fl border--black' id="search" placeholder='Enter address here' />
+                    <input class='input unround txt-s ml12 w240 h-auto fl border--black' id="search" placeholder='Enter a full address or a city and state' />
                     <button class='btn btn--s my3 unround'>Search</button>
                 </div>
                 
-                <p class='txt-m w-full mx-auto mt18 mb18 align-center'>Once loaded, hover over the zones for a more detailed definition and explanation.</p>
+                <p class='txt-m w-full mx-auto mt18 mb18 align-center'>Once loaded, click on the zones for a more detailed definition and explanation.</p>
 
                 <div class='txt-l w-full mx-auto mt24 align-center'>
 
@@ -43,7 +43,7 @@
                     </div>
                 </div>
 
-                <div id="accordion" class='txt-m w-full mx-auto mt12'>
+                <div id="accordion" class='txt-m w-full mx-auto mt12 pb24 mr3'>
                     <h3 class='align-center bg-gray-light border-b border--white p3'>More Information</h3>
                     <div class='p6'>
                         <p class='txt-s m3'>Flood insurance is federally required for all structures within the 100-year flood zone (Special Flood Hazard Area, SFHA) that carry a federally backed mortage.</p>
@@ -97,7 +97,6 @@
                             <li><b>LOMA</b> - Letter of Map Amendment</li>
                             <li><b>LOMR</b> - Letter of Map Revision</li>
                         </ul>
-
                     </div>
                 </div>
 
@@ -134,14 +133,6 @@
                     <div class='toggle unround'>Topographic</div>
                 </label>
             </div>
-
-        <!--    <div id='legend' class="bg-white">
-                <h5 class='txt-bold txt-l mb3 w-auto mx-auto'>Flood Zones Visible</h5>
-                <div id='legendContent' class="flex-parent bg-white">
-                    <div id='addColor' class="flex-child flex-child--no-shrink w30"></div>
-                    <div id='addLabel' class="flex-child flex-child--grow"></div>
-                </div>
-            </div> -->
         </div>
     </div>
 
@@ -149,12 +140,10 @@
         <p><span></span></p>
     </div>
 
-
     <script async defer src="https://api.mapbox.com/mapbox-assembly/v0.7.0/assembly.js"></script>
     <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
     <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
     <script src="https://unpkg.com/esri-leaflet-geocoder@2.2.3"></script>
-    <script src="https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
     <script src="js/jsonQ.min.js"></script>
