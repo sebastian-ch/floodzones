@@ -32,9 +32,9 @@
     var tileLayer = L.esri.basemapLayer('Gray').addTo(map);
     var baseLabels = L.esri.basemapLayer('GrayLabels').addTo(map);
 
-    //jquery to grab the input text and query the map based
-    //on it. Also if "enter" is pressed, it will do the same
-    //as if you hit the "search" button
+    //jquery to grab the input text and query the map based on it. 
+    //Also if "enter" is pressed, it will do the same as if you hit the "search" button
+
     $('.input').bind("enterKey", function (e) {
         searchAddress = $('.input').val();
         $('.loading').show();
@@ -79,7 +79,7 @@
 
         map.setZoom(15);
         var bounds = map.getBounds();
-        console.log(bounds);
+        //console.log(bounds);
 
         queryFloodMap(radiusLocation.getBounds());
     }
